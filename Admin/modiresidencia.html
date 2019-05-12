@@ -1,0 +1,55 @@
+    <a class="esconder btn btn-link" role="button" href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars"></i></a>
+    <div id="promo" style="background-color: #ffffff;background-image: url(../assets/img/star-sky.jpg&quot;);">
+        <div class="row register-form">
+            <div class="col-md-8 offset-md-2">
+                <form class="custom-form" method="post">
+                    <h1>Nueva Residencia</h1>
+                    <div class="form-row form-group">
+                        <div class="col-sm-4 label-column"><label class="col-form-label">Nombre</label></div>
+                        <div class="col-sm-6 input-column">
+                            <input class="form-control" type="text" name="nombre" value="<?php echo $resi->__GET('nombre')?>">
+                        </div>
+                    </div>
+                    <div class="form-row form-group">
+                        <div class="col-sm-4 label-column"><label class="col-form-label" >Direccion</label></div>
+                        <div class="col-sm-6 input-column">
+                            <input class="form-control" type="text" name="direccion" value="<?php echo $resi->__GET('direccion')?>">
+                        </div>
+                    </div>
+                    <div class="form-row form-group">
+                        <div class="col-sm-4 label-column"><label class="col-form-label" >Ciudad</label></div>
+                        <div class="col-sm-6 input-column">
+                            <input class="form-control" type="text" name="ciudad" value="<?php echo $resi->__GET('ciudad')?>">
+                        </div>
+                    </div>
+                    <div class="form-row form-group">
+                        <div class="col-sm-4 label-column"><label class="col-form-label" >Pais</label></div>
+                        <div class="col-sm-6 input-column">
+                            <input class="form-control" type="text" name="pais" value="<?php echo $resi->__GET('pais')?>">
+                        </div>
+                    </div>
+                    <div class="form-row form-group">
+                        <div class="col-sm-4 label-column"><label class="col-form-label" >Descripcion</label></div>
+                        <div class="col-sm-6 input-column">
+                            <input class="form-control" type="text" name="descripcion" value="<?php echo $resi->__GET('descripcion')?>">
+                        </div>
+                    </div>
+                    <div class="form-row form-group">
+                        <div class="col-sm-4 label-column"><label class="col-form-label" >Cant. de Personas</label></div>
+                        <div class="col-sm-6 input-column">
+                            <input class="form-control" type="text" name="cantpersonas" value="<?php echo $resi->__GET('cantpersonas')?>">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <button class="btn btn-primary" type="button">
+                                SUBIR FOTOS<br>
+                                <input type="file" name="" value="">
+                            </button>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary submit-button" type="submit" name="guardarresidencia">ACTUALIZAR</button>
+                </form>
+            </div>
+        </div>
+        </div>
