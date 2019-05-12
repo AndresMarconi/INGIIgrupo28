@@ -1,0 +1,35 @@
+#promo .jumbotron {
+  border-radius: 20px;
+  padding: 40px;
+  background-color: rgba(255,255,255,0.75);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.site-section {
+  text-align: center;
+  padding: 50px 0 60px;
+}
+
+#welcome {
+  max-width: 800px;
+  margin: 0 auto;
+  font-size: 20px;
+}
+
+.site-section h1 {
+  font-weight: normal;
+  margin-bottom: 30px;
+}
+
+#logo {
+  max-height: 42px;
+  margin-right: 10px;
+  margin-top: -12px;
+  display: inline-block;
+}
+

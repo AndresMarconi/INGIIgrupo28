@@ -1,0 +1,13 @@
+.esconder{
+		display: none !important;
+	}
+
+.panelAdm{
+	margin: 10px;
+}
+
+@media screen and (max-width: 600px) {
+	.esconder{
+		display: block !important;
+	}
+}
