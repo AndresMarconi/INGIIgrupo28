@@ -1,0 +1,23 @@
+        <ul class="nav nav-tabs">
+            <li id="usuario" class="nav-item nav-link active" onclick="selectLogin(this.id)">Usuario</li>
+            <li id="admin" class="nav-item nav-link" onclick="selectLogin(this.id)">Administrador</li>
+        </ul>
+        <div class="login-dark" style="height: 800px;">
+            <form method="post">
+                <input id="tipo" type="hidden" name="tipo" value="usuario">
+                <h2 class="sr-only">Login Form</h2>
+                <div class="illustration">
+                    <img src="assets/img/HSH-Complete.svg" id="logoL">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="nombre_usuario" placeholder="Nombre Usuario">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="password" name="password" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary btn-block" type="submit" name="logeo">Log In</button>
+                </div>
+                <a href="#" class="forgot">Forgot your email or password?</a>
+            </form>
+        </div>
