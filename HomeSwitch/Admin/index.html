@@ -1,0 +1,61 @@
+            <div class="container-fluid">
+                <a class="btn btn-link esconder" role="button" href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars"></i></a>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div>
+                            <h1 class="panelAdm">Panel de Administrador</h1>
+                            <h1>Subastas</h1>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Residencia</th>
+                                            <th>Fecha Inicio</th>
+                                            <th>Precio Base</th>
+                                            <th>Precio Actual</th>
+                                            <th>Ganador</th>
+                                            <th>Cerrar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach($adm->listarSubastas() as $r): 
+                                            $max = $r->pujaMaxima();
+                                            $ganador = $r->ganador($max);
+                                            $var2="Aun no tiene";
+                                            if(strcmp($ganador, $var2) !== 0){
+                                                $gan = 1;
+                                            } else {
+                                                $gan = 0;
+                                            }
+                                        ?>
+                                        <tr>
+                                            <td>
+                                                <a href="altaresidencia.php?idres=<?php echo $r->__GET('idResidencia')->__GET('idresidencia')?>">
+                                                    <?php echo $r->__GET('residencia')?>
+                                                </a>        
+                                            </td>
+                                            <td><?php echo $r->__GET('fechaInicio')?></td>
+                                            <td><?php echo $r->__GET('precioBase')?></td>
+                                            <td><?php echo $max ?></td>
+                                            <td><?php echo $ganador ?></td>
+                                            <td>
+                                                <?php if($r->__GET('estado')){?>
+                                                <form method="post" 
+                                                action="?cerrarSub=<?php echo $r->__GET('numReserva')?>&gan=<?php echo $gan?>">
+                                                    <input type="hidden" name="email<?php echo $r->__GET('numReserva')?>" value="<?php echo $ganador ?>">
+                                                    <button class="btn btn-danger">CERRAR</button>
+                                                </form>
+                                                <?php } else {?>
+                                                    Subasta Cerrada
+                                                <?php }?>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach;?>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>

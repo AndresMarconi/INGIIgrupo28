@@ -1,0 +1,58 @@
+<div class="container-fluid">
+                <a class="btn btn-link esconder" role="button" href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars"></i></a>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div>
+                            <h1 class="panelAdm">LISTADO DE RESIDENCIAS</h1>
+                            <h1>Residencias</h1>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Direccion</th>
+                                            <th>Ciudad</th>
+                                            <th>Pais</th>
+                                            <th>Habitaciones</th>
+                                            <th>Descripcion</th>
+                                            <th>Detalles</th>
+                                            <th>Eliminar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php foreach($adm->listarResidencias() as $r): ?>
+                                        <tr>
+                                            <td>
+
+                                                <a href="verresidencia.php?idres=<?php echo $r->__GET('idresidencia')?>">
+                                                    <?php echo $r->__GET('nombre')?>
+                                                </a>        
+                                                    
+                                                </td>
+                                            <td><?php echo $r->__GET('direccion')?></td>
+                                            <td><?php echo $r->__GET('ciudad')?></td>
+                                            <td><?php echo $r->__GET('pais')?></td>
+                                            <td><?php echo $r->__GET('cantpersonas')?></td>
+                                            <td><?php echo $r->__GET('descripcion')?></td>
+                                            <td>
+                                                <div class="buttons">
+                                                    <a class="btn btn-primary" role="button" 
+                                                    href="altaresidencia.php?idres=<?php echo $r->__GET('idresidencia')?>">
+                                                        MODIFICAR
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <form method="post" action="?idElimRes=<?php echo $r->__GET('idresidencia')?>">
+                                                    <button class="btn btn-danger">ELIMINAR</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach;?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
