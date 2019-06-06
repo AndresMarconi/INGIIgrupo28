@@ -1,19 +1,14 @@
 <?php
 class Reserva
 {
-	private $dni;
-	private $nombre;
-	private $apellido;
-	private $contra;
-	private $idciudad;
-	private $ciudad;
-	private $direccion;
-	private $email;
-	private $ntel;
-	private $chat;
-	private $plan;
-	private $rutina;
-
+	private $numReserva;
+	private $idResidencia;
+	private $residencia;
+	private $disponibilidadDesde;
+	private $disponibilidadHasta;
+	private $año;
+	private $semana;
+	private $estado;
 
 // Constructor
 	public function __CONSTRUCT(){}

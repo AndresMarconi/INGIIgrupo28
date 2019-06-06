@@ -74,6 +74,25 @@ class residenciaModel
 		}
 	}
 
+	public function ObtenerPorNombre(residencia $resi)
+	{
+		try 
+		{
+			$stm = $this->pdo
+			          ->prepare("SELECT idresidencia FROM `residencia` WHERE nombre = ? AND direccion = ?");
+			     
+			$stm->execute(array($resi->__GET('nombre'), $resi->__GET('direccion')));
+			$r = $stm->fetch(PDO::FETCH_OBJ);
+
+			$resi->__SET('idresidencia', $r->idresidencia);	
+			
+			return $resi;
+		} catch (Exception $e) 
+		{
+			die($e->getMessage());
+		}
+	}
+
 	public function Eliminar($id)
 	{
 		try 
@@ -123,12 +142,11 @@ class residenciaModel
 	{
 		try 
 		{
-		$sql = "INSERT INTO residencia(idresidencia, descripcion, direccion, nombre, pais, ciudad, cantpersonas) 
-				VALUES (?, ?, ?, ?, ?, ?, ?)";
+		$sql = "INSERT INTO residencia(descripcion, direccion, nombre, pais, ciudad, cantpersonas) 
+				VALUES (?, ?, ?, ?, ?, ?)";
 		$this->pdo->prepare($sql)
 		     ->execute(
 			array(
-				$data->__GET('idresidencia'),
 				$data->__GET('descripcion'),
 				$data->__GET('direccion'),
 				$data->__GET('nombre'),
@@ -143,15 +161,15 @@ class residenciaModel
 		}
 	}
 
-	public function existe($id)
+	public function existe($resi)
 	{
 		try 
 		{
-			$stm = $this->pdo->prepare("SELECT * FROM usuarios WHERE dni = ?");
-			$stm->execute(array($id));
+			$stm = $this->pdo->prepare("SELECT * FROM residencia WHERE nombre = ? AND direccion = ?");
+			$stm->execute(array($resi->__GET('nombre'), $resi->__GET('direccion')));
 			$r = $stm->fetch(PDO::FETCH_OBJ);
 
-			if (mysqli_num_rows($r)==1){
+			if (!empty($r)){
 				return true;
 			} else {
 				return false;
@@ -161,7 +179,6 @@ class residenciaModel
 			die($e->getMessage());
 		}
 	}
-	
 
 	public function sigId()
 	{
@@ -177,5 +194,4 @@ class residenciaModel
 			die($e->getMessage());
 		}
 	}
-
 }

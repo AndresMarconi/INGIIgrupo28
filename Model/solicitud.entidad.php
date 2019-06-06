@@ -1,8 +1,8 @@
 <?php
-class Basico extends Usuario
+class Solicitud
 {
+	private $username;
 	private $estado;
-
 
 // Constructor
 	public function __CONSTRUCT(){}

@@ -33,3 +33,17 @@ body {
   display: inline-block;
 }
 
+
+.sliderEdit{
+  max-height: 250px;
+  margin: 15px;
+}
+
+.itemSliderEdit{
+  max-height: 250px;
+}
+
+
+.imgSliderEdit{
+  max-height: 250px !important; 
+}

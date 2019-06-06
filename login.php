@@ -17,19 +17,27 @@
 		 	if ($_POST['nombre_usuario'] != "" and $_POST['password'] != ""){
 		 		if ($_POST['tipo'] == 'usuario') {
 		 			$usu = $home->obtenerUsu($_POST['nombre_usuario']);
+		 			if($usu->acceso($_POST['password'])){
+						$_SESSION['usu']=$_POST["nombre_usuario"];
+						$usu->login();
+					} else {
+						echo "<script languaje= 'javascript'>";
+						echo "window.location='login.php';";
+						echo "alert ('Datos de usuario incorrectos')";
+						echo "</script>";
+					}
 		 		} else {
 		 			$usu = $home->obtenerAdmin($_POST['nombre_usuario']);
+		 			if($usu->acceso($_POST['password'])){
+						$_SESSION['usu']=$_POST["nombre_usuario"];
+						$usu->login();
+					} else {
+						echo "<script languaje= 'javascript'>";
+						echo "window.location='login.php';";
+						echo "alert ('Datos de usuario incorrectos')";
+						echo "</script>";
+					}
 		 		}
-				if($usu->acceso($_POST['password'])){
-
-					$_SESSION['usu']=$_POST["nombre_usuario"];
-					$usu->login();
-				} else {
-					echo "<script languaje= 'javascript'>";
-					echo "window.location='login.php';";
-					echo "alert ('Datos de usuario incorrectos')";
-					echo "</script>";
-				}
 			} else {
 				echo "<script languaje= 'javascript'>";
 				echo "window.location='login.php';";

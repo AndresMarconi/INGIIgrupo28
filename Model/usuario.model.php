@@ -7,7 +7,7 @@ class usuarioModel
 	{
 		try
 		{
-			$this->pdo = new PDO('mysql:host=localhost;dbname=nutritushabitos;charset=utf8', 'root', '');
+			$this->pdo = new PDO('mysql:host=localhost;dbname=homeswitch;charset=utf8', 'root', '');
 			$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);		        
 		}
 		catch(Exception $e)
@@ -21,12 +21,7 @@ class usuarioModel
 		try
 		{
 			$result = array();
-			$stm = $this->pdo->prepare("SELECT * FROM usuarios u 
-								INNER JOIN planusuario upn ON (u.dni = upn.nrodni)
-								INNER JOIN plannutricional pn ON (upn.nroplan = pn.idplan)
-								INNER JOIN rutinausuario uru ON (u.dni = uru.nrodni)
-								INNER JOIN rutina rut ON (uru.nrorutina = rut.idrutina)
-								WHERE upn.actual = 1 AND uru.actual = 1");
+			$stm = $this->pdo->prepare("SELECT * FROM usuarios");
 			$stm->execute();
 			foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r)
 			{
@@ -39,14 +34,7 @@ class usuarioModel
 				$usr->__SET('idciudad', $r->idciudad);
 				$usr->__SET('direccion', $r->direccion);
 				$usr->__SET('email', $r->email);
-				$usr->__SET('ntel', $r->ntel);	
-				$usr->__SET('plan', new planNutricional());
-				$usr->__GET('plan')->__SET('nroplan', $r->idplan);
-				$usr->__GET('plan')->__SET('nombre', $r->nombreplan);
-				$usr->__GET('plan')->__SET('estado', $r->estado);
-				$usr->__SET('rutina', new rutina());
-				$usr->__GET('rutina')->__SET('nrorutina', $r->idrutina);
-				$usr->__GET('rutina')->__SET('nombre', $r->nombrerut);			
+				$usr->__SET('ntel', $r->ntel);			
 
 				$result[] = $usr;
 			}
@@ -62,64 +50,32 @@ class usuarioModel
 	{
 		try 
 		{
-			$stm = $this->pdo
-			          ->prepare("SELECT * FROM usuarios u 
-								INNER JOIN planusuario upn ON (u.dni = upn.nrodni)
-								INNER JOIN plannutricional pn ON (upn.nroplan = pn.idplan)
-								INNER JOIN rutinausuario uru ON (u.dni = uru.nrodni)
-								INNER JOIN rutina rut ON (uru.nrorutina = rut.idrutina)
-								WHERE upn.actual = 1 AND uru.actual = 1 AND u.dni = ?");
+			$stm = $this->pdo->prepare("SELECT * FROM usuario WHERE username = ?");
 			     
 			$stm->execute(array($id));
 			$r = $stm->fetch(PDO::FETCH_OBJ);
 
-			$usr = new usuario();
+			$tipo = $r->tipo;
+			if (!empty($r)) {
+				$usr = new $tipo();
 
-			$usr->__SET('dni', $r->dni);
-			$usr->__SET('nombre', $r->nombre);
-			$usr->__SET('apellido', $r->apellido);
-			$usr->__SET('contra', $r->contra);
-			$usr->__SET('idciudad', $r->idciudad);
-			$usr->__SET('direccion', $r->direccion);
-			$usr->__SET('email', $r->email);
-			$usr->__SET('ntel', $r->ntel);
-			$usr->__SET('plan', new planNutricional());
-			$usr->__GET('plan')->__SET('nroplan', $r->idplan);
-			$usr->__GET('plan')->__SET('nombre', $r->nombreplan);
-			$usr->__GET('plan')->__SET('estado', $r->estado);
-			$usr->__SET('rutina', new rutina());
-			$usr->__GET('rutina')->__SET('nrorutina', $r->idrutina);
-			$usr->__GET('rutina')->__SET('nombre', $r->nombrerut);	
-			
+				$usr->__SET('dni', $r->dni);
+				$usr->__SET('nombre', $r->nombre);
+				$usr->__SET('apellido', $r->apellido);
+				$usr->__SET('username', $r->username);
+				$usr->__SET('contra', $r->contraseña);
+				$usr->__SET('direccion', $r->direccion);
+				$usr->__SET('email', $r->mail);
+				$usr->__SET('telefono', $r->telefono);
+				$usr->__SET('nroTarjeta', $r->numTarjeta);
+				$usr->__SET('vencimiento', $r->vencimientoTarjeta);
+				$usr->__SET('codSeg', $r->codSegTarjeta);
+				
+			} else{
+				$usr = new usuario();
+			}
 			return $usr;
-		} catch (Exception $e) 
-		{
-			die($e->getMessage());
-		}
-	}
-
-	public function ObtenerAdmin($id)
-	{
-		try 
-		{
-			$stm = $this->pdo
-			          ->prepare("SELECT * FROM usuarios WHERE dni = ?");
-			     
-			$stm->execute(array($id));
-			$r = $stm->fetch(PDO::FETCH_OBJ);
-
-			$adm = new admin();
-
-			$adm->__SET('dni', $r->dni);
-			$adm->__SET('nombre', $r->nombre);
-			$adm->__SET('apellido', $r->apellido);
-			$adm->__SET('contra', $r->contra);
-			$adm->__SET('idciudad', $r->idciudad);
-			$adm->__SET('direccion', $r->direccion);
-			$adm->__SET('email', $r->email);
-			$adm->__SET('ntel', $r->ntel);	
 			
-			return $adm;
 		} catch (Exception $e) 
 		{
 			die($e->getMessage());
@@ -131,7 +87,7 @@ class usuarioModel
 		try 
 		{
 			$stm = $this->pdo
-			          ->prepare("DELETE FROM usuarios WHERE dni = ?");			          
+			          ->prepare("DELETE FROM usuarios WHERE username = ?");			          
 
 			$stm->execute(array($id));
 		} catch (Exception $e) 
@@ -140,73 +96,39 @@ class usuarioModel
 		}
 	}
 
-	public function Actualizar(usuario $data)
+	public function Actualizar(usuario $data, $userViejo)
 	{
 		try 
 		{
-			$sql = "UPDATE usuarios SET 
+			$sql = "UPDATE usuario SET
+						dni                 = ?,
+						username 			= ?, 
 						nombre             	= ?,
 						apellido           	= ?,
-						contra              = ?,
-						idciudad           	= ?, 
+						contraseña              = ?,
 						direccion          	= ?, 
-						email     			= ?, 
-						ntel	     		= ?
-				    WHERE dni = ?";
+						mail     			= ?, 
+						telefono	     		= ?,
+						vencimientoTarjeta 	= ?,
+						codSegTarjeta 		= ?,
+						numTarjeta			= ?
+				    WHERE username = ?";
 
 			$this->pdo->prepare($sql)
 			     ->execute(
 				array(
+					$data->__GET('dni'),
+					$data->__GET('username'),
 					$data->__GET('nombre'),
 					$data->__GET('apellido'),
 					$data->__GET('contra'),
-					$data->__GET('idciudad'),
 					$data->__GET('direccion'),
 					$data->__GET('email'),
-					$data->__GET('ntel'),
-					$data->__GET('dni')
-					)
-				);
-		} catch (Exception $e) 
-		{
-			die($e->getMessage());
-		}
-	}
-
-	public function ActualizarPlan(usuario $data)
-	{
-		try 
-		{
-			$sql = "UPDATE `planusuario` SET `actual`= ?,`estado`= ? WHERE nrodni = ? AND nroplan = ?";
-
-			$this->pdo->prepare($sql)
-			     ->execute(
-				array(
-					$data->__GET('plan')->__GET('actual'),
-					$data->__GET('plan')->__GET('estado'),
-					$data->__GET('dni'),
-					$data->__GET('plan')->__GET('nroplan')
-					)
-				);
-		} catch (Exception $e) 
-		{
-			die($e->getMessage());
-		}
-	}
-
-	public function ActualizarRutina(usuario $data)
-	{
-		try 
-		{
-			$sql = "UPDATE `Rutinausuario` SET `actual`= ?,`estado`= ? WHERE nrodni = ? AND nrorutina = ?";
-
-			$this->pdo->prepare($sql)
-			     ->execute(
-				array(
-					$data->__GET('rutina')->__GET('actual'),
-					$data->__GET('rutina')->__GET('estado'),
-					$data->__GET('dni'),
-					$data->__GET('rutina')->__GET('nrorutina')
+					$data->__GET('telefono'),
+					$data->__GET('vencimiento'),
+					$data->__GET('codSeg'),					
+					$data->__GET('nroTarjeta'),
+					$userViejo
 					)
 				);
 		} catch (Exception $e) 
@@ -219,40 +141,26 @@ class usuarioModel
 	{
 		try 
 		{
-		$sql = "INSERT INTO usuarios (`dni`, `nombre`, `apellido`, `idciudad`, `direccion`, `email`, `ntel`, `contra`) 
-		        VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		$sql = "INSERT INTO usuario(dni, tipo, contraseña, cantReservas, nombre, apellido, mail, telefono, direccion, inicioContrato, finContrato, numTarjeta, vencimientoTarjeta, codSegTarjeta, username) 
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		$this->pdo->prepare($sql)
 		     ->execute(
 			array(
 				$data->__GET('dni'),
+				1,
+				$data->__GET('contra'),
+				2,
 				$data->__GET('nombre'),
 				$data->__GET('apellido'),
-				$data->__GET('idciudad'),
-				$data->__GET('direccion'),
 				$data->__GET('email'),
-				$data->__GET('ntel'),
-				$data->__GET('contra'),
-				)
-			);
-		} catch (Exception $e) 
-		{
-			die($e->getMessage());
-		}
-	}
-	
-	public function RegistrarElPlan(usuario $data)
-	{
-		try 
-		{
-		$sql = "INSERT INTO `planusuario`(`nrodni`, `nroplan`, `actual`, `estado`) 
-				VALUES (?, ?, ?, ?)";
-		$this->pdo->prepare($sql)
-		     ->execute(
-			array(
-				$data->__GET('dni'),
-				$data->__GET('plan')->__GET('nroplan'),
-				$data->__GET('plan')->__GET('actual'),
-				$data->__GET('plan')->__GET('estado')
+				$data->__GET('telefono'),
+				$data->__GET('direccion'),
+				0,
+				0,
+				$data->__GET('nroTarjeta'),
+				$data->__GET('vencimiento'),
+				$data->__GET('codSeg'),
+				$data->__GET('username')
 				)
 			);
 		} catch (Exception $e) 
@@ -261,36 +169,14 @@ class usuarioModel
 		}
 	}
 
-	public function RegistrarLaRutina(usuario $data)
+	public function existe($un)
 	{
 		try 
 		{
-		$sql = "INSERT INTO `rutinausuario`(`nrodni`, `nrorutina`, `actual`, `estado`) 
-				VALUES (?, ?, ?, ?)";
-		$this->pdo->prepare($sql)
-		     ->execute(
-			array(
-				$data->__GET('dni'),
-				$data->__GET('rutina')->__GET('nrorutina'),
-				$data->__GET('rutina')->__GET('actual'),
-				$data->__GET('rutina')->__GET('estado')
-				)
-			);
-		} catch (Exception $e) 
-		{
-			die($e->getMessage());
-		}
-	}
-
-	public function existe($id)
-	{
-		try 
-		{
-			$stm = $this->pdo->prepare("SELECT * FROM usuarios WHERE dni = ?");
-			$stm->execute(array($id));
+			$stm = $this->pdo->prepare("SELECT * FROM usuario WHERE username = ?");
+			$stm->execute(array($un));
 			$r = $stm->fetch(PDO::FETCH_OBJ);
-
-			if (mysqli_num_rows($r)==1){
+			if (!empty($r)){
 				return true;
 			} else {
 				return false;
@@ -300,5 +186,4 @@ class usuarioModel
 			die($e->getMessage());
 		}
 	}
-	
 }

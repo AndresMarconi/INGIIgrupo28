@@ -8,11 +8,13 @@ class admin
 	private $contraseña;
 	private $email;
 	private $residencias;
+	private $reservas;
 
 //Constructor
 	public function __CONSTRUCT()
 	{
 		$this->residencias = new residenciaModel();
+		$this->reservas = new reservaModel();
 	}
 
 //Getter y Setter
@@ -31,7 +33,6 @@ class admin
 	public function login(){
 		echo "<script languaje= 'javascript'>";
 		echo "window.location='Admin/index.php';";
-		echo "alert('entro');";
 		echo "</script>";
 	}
 
@@ -54,14 +55,18 @@ class admin
 		return $this->residencias->listar();
 	}
 
+	public function existeResi($resi){
+		return $this->residencias->existe($resi);
+	}
+
 	public function obtenerResidencia($idresi){
 		$resi = $this->residencias->Obtener($idresi);
 		return $resi;
 	}
 
 	public function agregarResidencia($resi){
-		$resi->__SET('idresidencia', $this->residencias->sigId());
 		$this->residencias->Registrar($resi);
+		$this->residencias->ObtenerPorNombre($resi);
 		echo "<script languaje= 'javascript'>";
 		echo "alert ('residencia Registrada');";
 		echo "window.location='index.php';";
@@ -80,5 +85,44 @@ class admin
 		echo "window.location='index.php';";
 		echo "</script>";
 	}
-   // fin de planes
+   // fin de residencias
+
+	//Subasta
+	public function listarSubastas(){
+		return $this->reservas->listarSubastas();
+	}
+
+	public function obtenerSubasta($idreserva){
+		$resi = $this->residencias->Obtener($idresi);
+		return $resi;
+	}
+
+	public function agregarSubasta($sub){
+		$sub->__SET('numReserva', $this->reservas->sigId());
+		$this->reservas->RegistrarSubasta($sub);
+		echo "<script languaje= 'javascript'>";
+		echo "alert ('Subasta Registrada');";
+		echo "window.location='index.php';";
+		echo "</script>";
+		return $sub;
+	}
+
+	public function cerrarSubasta($idreserva){
+		$this->reservas->cerrar($idreserva);
+	}
+
+	public function existeReserva($idres, $semana, $año){
+		return $this->reservas->existeReserva($idres, $semana, $año);
+	}
+
+	public function guardarSubasta($sub){
+		$this->residencias->Actualizar($resi);
+		echo "<script languaje= 'javascript'>";
+		echo "alert ('residencia Actualizada');";
+		echo "window.location='index.php';";
+		echo "</script>";
+	}
+
+
+   // fin de subasta
 }

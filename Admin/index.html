@@ -4,77 +4,57 @@
                     <div class="col-md-12">
                         <div>
                             <h1 class="panelAdm">Panel de Administrador</h1>
-                            <h1>Usuarios</h1>
+                            <h1>Subastas</h1>
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th>Column 1</th>
-                                            <th>Column 2</th>
-                                            <th>Column 2</th>
-                                            <th>Column 2</th>
-                                            <th>Column 2</th>
-                                            <th>Column 2</th>
+                                            <th>Residencia</th>
+                                            <th>Fecha Inicio</th>
+                                            <th>Precio Base</th>
+                                            <th>Precio Actual</th>
+                                            <th>Ganador</th>
+                                            <th>Cerrar</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php foreach($adm->listarSubastas() as $r): 
+                                            $max = $r->pujaMaxima();
+                                            $ganador = $r->ganador($max);
+                                            $var2="Aun no tiene";
+                                            if(strcmp($ganador, $var2) !== 0){
+                                                $gan = $r->__GET('numReserva');
+                                            } else {
+                                                $gan = 0;
+                                            }
+                                        ?>
                                         <tr>
-                                            <td>Cell 1</td>
-                                            <td>Cell 2</td>
-                                            <td>Cell 2</td>
-                                            <td>Cell 2</td>
-                                            <td>Cell 2</td>
-                                            <td>Cell 2</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Cell 3</td>
-                                            <td>Cell 4</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <h1>Residencias</h1>
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Nombre</th>
-                                            <th>Direccion</th>
-                                            <th>Ciudad</th>
-                                            <th>Pais</th>
-                                            <th>Habitaciones</th>
-                                            <th>Descripcion</th>
-                                            <th>Detalles</th>
-                                            <th>Eliminar</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php foreach($adm->listarResidencias() as $r): ?>
-                                        <tr>
-                                            <td><?php echo $r->__GET('nombre')?></td>
-                                            <td><?php echo $r->__GET('direccion')?></td>
-                                            <td><?php echo $r->__GET('ciudad')?></td>
-                                            <td><?php echo $r->__GET('pais')?></td>
-                                            <td><?php echo $r->__GET('cantpersonas')?></td>
-                                            <td><?php echo $r->__GET('descripcion')?></td>
                                             <td>
-                                                <div class="buttons">
-                                                    <a class="btn btn-primary" role="button" 
-                                                    href="altaresidencia.php?idres=<?php echo $r->__GET('idresidencia')?>">
-                                                        VER
-                                                    </a>
-                                                </div>
+                                                <a href="altaresidencia.php?idres=<?php echo $r->__GET('idResidencia')->__GET('idresidencia')?>">
+                                                    <?php echo $r->__GET('residencia')?>
+                                                </a>        
                                             </td>
+                                            <td><?php echo $r->__GET('semana').$r->__GET('año')?></td>
+                                            <td><?php echo $r->__GET('precioBase')?></td>
+                                            <td><?php echo $max ?></td>
+                                            <td><?php echo $ganador ?></td>
                                             <td>
-                                                <form method="post" action="?idElimRes=<?php echo $r->__GET('idresidencia')?>">
-                                                    <button class="btn btn-danger">ELIMINAR</button>
+                                                <?php if($r->__GET('estado')){?>
+                                                <form method="post" 
+                                                action="?cerrarSub=<?php echo $r->__GET('numReserva')?>&gan=<?php echo $gan?>">
+                                                    <input type="hidden" name="email<?php echo $r->__GET('numReserva')?>" value="<?php echo $ganador ?>">
+                                                    <button class="btn btn-danger">CERRAR</button>
                                                 </form>
+                                                <?php } else {?>
+                                                    Subasta Cerrada
+                                                <?php }?>
                                             </td>
                                         </tr>
                                     <?php endforeach;?>
                                     </tbody>
                                 </table>
                             </div>
+
                         </div>
                     </div>
                 </div>

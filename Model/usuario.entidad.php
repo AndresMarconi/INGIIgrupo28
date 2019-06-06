@@ -5,19 +5,30 @@ class usuario
 	private $nombre;
 	private $apellido;
 	private $contra;
-	private $idciudad;
+	private $username;
 	private $ciudad;
 	private $direccion;
 	private $email;
-	private $ntel;
-	private $chat;
-	private $plan;
-	private $rutina;
-
+	private $telefono;
+	private $nroTarjeta;
+	private $codSeg;
+	private $vencimiento;
 
 // Constructor
-	public function __CONSTRUCT()
-	{
+	public function __CONSTRUCT(){}
+
+	public function armar($datos){
+		$this->dni = $datos[0];
+		$this->nombre = $datos[1];
+		$this->apellido = $datos[2];
+		$this->username = $datos[3];
+		$this->contra = $datos[4];
+		$this->direccion = $datos[5];
+		$this->email = $datos[6];
+		$this->telefono = $datos[7];
+		$this->nroTarjeta = $datos[8];
+		$this->vencimiento = $datos[9];
+		$this->codSeg = $datos[10];
 	}
 
 //Getter y Setter
@@ -33,12 +44,18 @@ class usuario
 		}
 	}
 
+	public function login(){
+		echo "<script languaje= 'javascript'>";
+		echo "window.location='usuario/index.php';";
+		echo "</script>";
+	}
+
 	public function cerrarSesion() {
 		session_start();
 		session_unset();
 		session_destroy();
 		echo "<script languaje= 'javascript'>";
-		echo "window.location='index.html';";
+		echo "window.location='../index.php';";
 		echo "</script>";
 		exit;
 	}

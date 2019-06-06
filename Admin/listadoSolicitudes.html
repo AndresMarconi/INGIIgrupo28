@@ -1,0 +1,48 @@
+<div class="container-fluid">
+                <a class="btn btn-link esconder" role="button" href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars"></i></a>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div>
+                            <h1 class="panelAdm">LISTADO DE SOLICITUDES </h1>
+                            <h1>Solicitudes</h1>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Usuario</th>
+                                            <th>Aceptar</th>
+                                            <th>Rechazar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php foreach($home->listarSolicitudes() as $r): ?>
+                                        <tr>
+                                            <td>
+
+                                                <a href="../Usuario/perfil.php?username=<?php echo $r->__GET('username')?>">
+                                                    <?php echo $r->__GET('username')?>
+                                                </a>        
+                                                    
+                                                </td>
+                                            <td>
+                                                <div class="buttons">
+                                                    <a class="btn btn-primary" role="button" 
+                                                    href="altaresidencia.php?idres=<?php echo $r->__GET('idresidencia')?>">
+                                                        ACEPTAR
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <form method="post" action="?idElimRes=<?php echo $r->__GET('idresidencia')?>">
+                                                    <button class="btn btn-danger">RECHAZAR</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach;?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
