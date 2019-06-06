@@ -13,10 +13,14 @@
 	require_once '../Model/premiun.entidad.php';
 	//require_once '../Model/premiun.model.php';
 	require_once '../Model/reserva.entidad.php';
+	require_once '../Model/reserva.model.php';
 	require_once '../Model/directa.entidad.php';
 	//require_once '../Model/directa.model.php';
 	require_once '../Model/subasta.entidad.php';
 	//require_once '../Model/subasta.model.php';
+	require_once '../Model/historial.model.php';
 	require_once '../Model/hotsale.entidad.php';
 	//require_once '../Model/hotsale.model.php';
+	require_once'../Model/solicitudes.model.php';
+	require_once'../Model/solicitud.entidad.php';
 ?>

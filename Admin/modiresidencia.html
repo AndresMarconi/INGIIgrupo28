@@ -3,7 +3,7 @@
         <div class="row register-form">
             <div class="col-md-8 offset-md-2">
                 <form class="custom-form" method="post">
-                    <h1>Nueva Residencia</h1>
+                    <h1>Modificar Residencia</h1>
                     <div class="form-row form-group">
                         <div class="col-sm-4 label-column"><label class="col-form-label">Nombre</label></div>
                         <div class="col-sm-6 input-column">
@@ -35,7 +35,7 @@
                         </div>
                     </div>
                     <div class="form-row form-group">
-                        <div class="col-sm-4 label-column"><label class="col-form-label" >Cant. de Personas</label></div>
+                        <div class="col-sm-4 label-column"><label class="col-form-label" >Cant. de Habitaciones</label></div>
                         <div class="col-sm-6 input-column">
                             <input class="form-control" type="text" name="cantpersonas" value="<?php echo $resi->__GET('cantpersonas')?>">
                         </div>
@@ -43,8 +43,18 @@
                     <div class="form-row">
                         <div class="col">
                             <button class="btn btn-primary" type="button">
-                                SUBIR FOTOS<br>
-                                <input type="file" name="" value="">
+                                FOTO 1
+                                <input type="file" name="imagen1" value="">
+                            </button>
+                            <br><br>
+                            <button class="btn btn-primary" type="button">
+                                FOTO 2
+                                <input type="file" name="imagen2" value="">
+                            </button>
+                            <br><br>
+                            <button class="btn btn-primary" type="button">
+                                FOTO 3
+                                <input type="file" name="imagen3" value="">
                             </button>
                         </div>
                     </div>
