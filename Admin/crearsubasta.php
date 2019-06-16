@@ -23,16 +23,21 @@
 		if ((isset($_POST['precioBase'])) && ($_POST['precioBase'] > 0)) {
 			$año = substr($_POST['fechaInicio'], 0, 4);
 			$semana = substr($_POST['fechaInicio'], 6, 2);
-			$currentWeek=date('W'); $currentYear=date('Y');
-			if (($año > $currentYear)||(($año=$currentYear)&&($semana>$currentWeek))) {
+			$dto = new DateTime();
+  			$dto->setISODate($año, $semana);
+  			$fecha = $dto->format('Y-m-d');
+			$datetime1 = new DateTime('today');
+			$interval = $datetime1->diff(new DateTime($fecha));
+
+			if (($interval->format('%a'))>180) {
 				if (isset($_POST['residencia'])) {
 					if (!$adm->existeReserva($_POST['residencia'], $semana, $año)) {
-						$sub = new Subasta();
+						$sub = new directa();
 						$sub->__SET('idResidencia', $_POST['residencia']);
 						$sub->__SET('año', $año);
 						$sub->__SET('semana', $semana);
 						$sub->__SET('precioBase', $_POST['precioBase']);
-						$adm->agregarSubasta($sub);
+						$adm->agregarDirecta($sub);
 					} else {
 						echo "<script languaje= 'javascript'>";
 						echo "alert ('ya existe reserva para esta propiedad en esa fecha');";
@@ -45,7 +50,7 @@
 				}
 			} else {
 				echo "<script languaje= 'javascript'>";
-				echo "alert ('La semana debe ser posterior a la actual');";
+				echo "alert ('La fecha de inicio de reserva debe ser como minimo 6 meses posterior al dia de hoy');";
 				echo "</script>";	
 			}
 		} else {
@@ -58,23 +63,16 @@
 	if (isset($_POST['prueba'])) {
 		$año = substr($_POST['fechaInicio'], 0, 4);
 		$semana = substr($_POST['fechaInicio'], 6, 2);
-		$currentWeek=date('W'); $currentYear=date('Y');
-		if (($año > $currentYear)||(($año=$currentYear)&&($semana>$currentWeek))) {
-			if (!$adm->existeReserva($_POST['residencia'], $semana, $año)) {
-				echo "<script languaje= 'javascript'>";
-				echo "alert ('la semana no existe');";
-				echo "</script>";
-			} else {
-				echo "<script languaje= 'javascript'>";
-				echo "alert ('reserva ya existe');";
-				echo "</script>";
-			}
-		}	else {
-			echo "<script languaje= 'javascript'>";
-			echo "alert ('La semana debe ser posterior a la actual');";
-			echo "alert ('".$año.$semana."current".date('W').date('Y')."');";
-			echo "</script>";	
-		}
+		$dto = new DateTime();
+  		$dto->setISODate($año, $semana);
+  		$fecha = $dto->format('Y-m-d');
+		$datetime1 = new DateTime('today');
+		$interval = $datetime1->diff(new DateTime($fecha));
+
+		echo "<script languaje= 'javascript'>";
+		echo "alert ('Ingrese ".$interval->format('%a')." Precio base');";
+		echo "</script>";
+
 	}
 
 	if (isset($_POST['cerrar'])){

@@ -30,14 +30,55 @@
                                         ?>
                                         <tr>
                                             <td>
-                                                <a href="altaresidencia.php?idres=<?php echo $r->__GET('idResidencia')->__GET('idresidencia')?>">
+                                                <a href="verresidencia.php?idres=<?php echo $r->__GET('idResidencia')->__GET('idresidencia')?>">
                                                     <?php echo $r->__GET('residencia')?>
                                                 </a>        
                                             </td>
-                                            <td><?php echo $r->__GET('semana').$r->__GET('año')?></td>
+                                            <td><?php echo $r->__GET('semana').'-'.$r->__GET('año')?></td>
                                             <td><?php echo $r->__GET('precioBase')?></td>
                                             <td><?php echo $max ?></td>
                                             <td><?php echo $ganador ?></td>
+                                            <td>
+                                                <?php if($r->__GET('estado')){?>
+                                                <form method="post" 
+                                                action="?cerrarSub=<?php echo $r->__GET('numReserva')?>&gan=<?php echo $gan?>">
+                                                    <input type="hidden" name="email<?php echo $r->__GET('numReserva')?>" value="<?php echo $ganador ?>">
+                                                    <button class="btn btn-danger">CERRAR</button>
+                                                </form>
+                                                <?php } else {?>
+                                                    Subasta Cerrada
+                                                <?php }?>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach;?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h1>Directa</h1>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Residencia</th>
+                                            <th>semana</th>
+                                            <th>año</th>
+                                            <th>Fecha Inicio</th>
+                                            <th>Cerrar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach($adm->listarDirectas() as $r):
+                                        ?>
+                                        <tr>
+                                            <td>
+                                                <a href="verresidencia.php?idres=<?php echo $r->__GET('idResidencia')->__GET('idresidencia')?>">
+                                                    <?php echo $r->__GET('residencia')?>
+                                                </a>        
+                                            </td>
+                                            <td><?php echo $r->__GET('semana')?></td>
+                                            <td><?php echo $r->__GET('año')?></td>
+                                            <td><?php echo $r->__GET('fechainicio')?></td>
                                             <td>
                                                 <?php if($r->__GET('estado')){?>
                                                 <form method="post" 

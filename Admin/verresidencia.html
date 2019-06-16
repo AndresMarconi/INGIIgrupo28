@@ -55,6 +55,12 @@
                             <h2> <?php echo $resi->__GET('cantpersonas')?></h2>
                         </div>
                     </div>
+                    <?php foreach($adm->listarXresidencia($resi->__GET('idresidencia')) as $r):?>
+            <div>
+                <h1><?php echo $r->__GET('semana')?></h1>
+                <h1><?php echo $r->tipo()?></h1>
+            </div>
+            <?php endforeach;?>
                 </form>
             </div>
         </div>
