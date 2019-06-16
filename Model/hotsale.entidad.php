@@ -1,19 +1,6 @@
 <?php
 class HotSale extends Reserva
 {
-	private $dni;
-	private $nombre;
-	private $apellido;
-	private $contra;
-	private $idciudad;
-	private $ciudad;
-	private $direccion;
-	private $email;
-	private $ntel;
-	private $chat;
-	private $plan;
-	private $rutina;
-
 
 // Constructor
 	public function __CONSTRUCT(){}
@@ -21,5 +8,15 @@ class HotSale extends Reserva
 //Getter y Setter
 	public function __GET($k){ return $this->$k; }
 	public function __SET($k, $v){ return $this->$k = $v; }
+
+	public function tipo(){
+		if (!$this->estado) {
+			$str = 'reserva realizada';
+		} else {
+			$str = 'Hot Sale';
+		}
+		
+		return $str;
+	}
 }
 ?>

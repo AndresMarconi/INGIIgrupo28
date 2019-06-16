@@ -51,15 +51,15 @@ class HomeSwitch
 	}
 
 	public function listarSubastas(){
-		return $this->reservas->listarSubastas();
+		return $this->reservas->listar('subasta');
 	}
 
 	public function listarSubastasAbiertas(){
-		return $this->reservas->listarSubastasAbiertas();
+		return $this->reservas->listarAbiertas('subasta');
 	}
 
 	public function obtenerSubasta($id){
-		return $this->reservas->obtenerSubasta($id);
+		return $this->reservas->obtener($id, 'subasta');
 	}
 
 	public function tieneReservas($id){

@@ -1,7 +1,6 @@
 <?php
 class Subasta extends Reserva
 {
-	private $precioBase;
 	private $historial;
 
 // Constructor
@@ -12,6 +11,16 @@ class Subasta extends Reserva
 //Getter y Setter
 	public function __GET($k){ return $this->$k; }
 	public function __SET($k, $v){ return $this->$k = $v; }
+
+	public function tipo(){
+		if (!$this->estado) {
+			$str = 'reserva realizada';
+		} else {
+			$str = 'Subasta';
+		}
+		
+		return $str;
+	}
 
 	public function pujaMaxima(){
 		$res = $this->historial->ObtenerPujaMaxima($this->numReserva);

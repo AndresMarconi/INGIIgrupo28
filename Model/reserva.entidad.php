@@ -4,11 +4,11 @@ class Reserva
 	private $numReserva;
 	private $idResidencia;
 	private $residencia;
-	private $disponibilidadDesde;
-	private $disponibilidadHasta;
+	private $fechainicio;
 	private $año;
 	private $semana;
 	private $estado;
+	private $precioBase;
 
 // Constructor
 	public function __CONSTRUCT(){}

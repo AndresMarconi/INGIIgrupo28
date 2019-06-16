@@ -89,7 +89,15 @@ class admin
 
 	//Subasta
 	public function listarSubastas(){
-		return $this->reservas->listarSubastas();
+		return $this->reservas->listar('subasta');
+	}
+
+	public function listarDirectas(){
+		return $this->reservas->listar('directa');
+	}
+
+	public function listarXresidencia($idres){
+		return $this->reservas->listarXresidencia($idres);
 	}
 
 	public function obtenerSubasta($idreserva){
@@ -99,12 +107,22 @@ class admin
 
 	public function agregarSubasta($sub){
 		$sub->__SET('numReserva', $this->reservas->sigId());
-		$this->reservas->RegistrarSubasta($sub);
+		$this->reservas->Registrar($sub, 'subasta');
 		echo "<script languaje= 'javascript'>";
 		echo "alert ('Subasta Registrada');";
 		echo "window.location='index.php';";
 		echo "</script>";
 		return $sub;
+	}
+
+	public function agregarDirecta($dir){
+		$dir->__SET('numReserva', $this->reservas->sigId());
+		$this->reservas->Registrar($dir, 'directa');
+		echo "<script languaje= 'javascript'>";
+		echo "alert ('Reserva Registrada');";
+		echo "window.location='index.php';";
+		echo "</script>";
+		return $dir;
 	}
 
 	public function cerrarSubasta($idreserva){

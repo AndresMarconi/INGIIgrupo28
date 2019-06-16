@@ -28,7 +28,6 @@ class adminModel
 
 			$adm = new admin();
 
-			$adm->__SET('dni', $r->dni);
 			$adm->__SET('username', $r->username);
 			$adm->__SET('nombre', $r->nombre);
 			$adm->__SET('apellido', $r->apellido);
@@ -47,7 +46,7 @@ class adminModel
 		try 
 		{
 			$stm = $this->pdo
-			          ->prepare("DELETE FROM usuarios WHERE dni = ?");			          
+			          ->prepare("DELETE FROM usuarios WHERE username = ?");			          
 
 			$stm->execute(array($id));
 		} catch (Exception $e) 

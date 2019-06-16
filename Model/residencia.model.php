@@ -28,7 +28,6 @@ class residenciaModel
 				$resi = new residencia();
 
 				$resi->__SET('idresidencia', $r->idresidencia);
-				$resi->__SET('dni', $r->dni);
 				$resi->__SET('nombre', $r->nombre);
 				$resi->__SET('descripcion', $r->descripcion);
 				$resi->__SET('pais', $r->pais);
@@ -59,7 +58,6 @@ class residenciaModel
 			$resi = new residencia();
 
 			$resi->__SET('idresidencia', $r->idresidencia);
-			$resi->__SET('dni', $r->dni);
 			$resi->__SET('nombre', $r->nombre);
 			$resi->__SET('descripcion', $r->descripcion);
 			$resi->__SET('pais', $r->pais);
