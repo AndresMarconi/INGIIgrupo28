@@ -31,6 +31,55 @@ class SolicitudesPremiumModel
 		}
 	}
 
+	public function terminarSolicitud($id)
+	{
+		try 
+		{
+			$stm = $this->pdo
+			          ->prepare("DELETE FROM peticiones WHERE username = ?");
+			     
+			$stm->execute(array($id));
+
+		} catch (Exception $e) 
+		{
+			die($e->getMessage());
+		}
+	}
+
+	public function consultar($usu){
+				try
+		{
+			$result = array();
+			$stm = $this->pdo->prepare("SELECT * FROM `peticiones` WHERE username= ?");
+			$stm->execute(array($usu));
+			$r = $stm->fetch(PDO::FETCH_OBJ);
+				$sol = new solicitud();
+				$sol->__SET('username', $r->username);
+				$sol->__SET('estado', $r->estado);	
+			return $sol;
+		}
+		catch(Exception $e)
+		{
+			die($e->getMessage());
+		}
+		
+	}
+
+		public function contestarSolicitud($id , $resp)
+	{
+		try 
+		{
+			$stm = $this->pdo
+			          ->prepare("UPDATE `peticiones` SET `estado`= ? WHERE username = ?");
+			     
+			$stm->execute(array($resp , $id));
+
+		} catch (Exception $e) 
+		{
+			die($e->getMessage());
+		}
+	}
+
 	public function tienePendiente($id)
 	{
 		try 
@@ -52,32 +101,13 @@ class SolicitudesPremiumModel
 			die($e->getMessage());
 		}
 	}
-
-	public function registrarPuja($id, $puja, $username)
-	{
-		try 
-		{
-			$stm = $this->pdo
-			          ->prepare("INSERT INTO historialdepujas(username, idsubasta, montopuja) VALUES (?, ?, ?)");
-			     
-			$stm->execute(array(
-				$username,
-				$id,
-				$puja
-			)
-			);
-		} catch (Exception $e) 
-		{
-			die($e->getMessage());
-		}
-	}
-
+	
 	public function Listar()
 	{
 		try
 		{
 			$result = array();
-			$stm = $this->pdo->prepare("SELECT * FROM peticiones");
+			$stm = $this->pdo->prepare("SELECT * FROM peticiones WHERE estado = 'esperandoRespuesta'");
 			$stm->execute();
 			foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r)
 			{
@@ -95,5 +125,4 @@ class SolicitudesPremiumModel
 			die($e->getMessage());
 		}
 	}
-
 }

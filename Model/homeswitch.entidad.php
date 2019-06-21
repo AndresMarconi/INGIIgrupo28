@@ -50,8 +50,24 @@ class HomeSwitch
 		echo "</script>";
 	}
 
+	public function actualizarPrecios($basico, $premiun){
+		$this->admins->cambiarPrecios($basico, $premiun);
+	}
+
+	public function obtenerPrecioBasico(){
+		return $this->admins->precioBasico();
+	}
+
+	public function obtenerPrecioPremium(){
+		return $this->admins->precioPremium();
+	}
+
 	public function listarSubastas(){
 		return $this->reservas->listar('subasta');
+	}
+
+	public function listarReservasAbiertas(){
+		return $this->reservas->listarReservasAbiertas();
 	}
 
 	public function listarSubastasAbiertas(){
@@ -60,6 +76,10 @@ class HomeSwitch
 
 	public function obtenerSubasta($id){
 		return $this->reservas->obtener($id, 'subasta');
+	}
+
+		public function obtenerDirecta($id){
+		return $this->reservas->obtener($id, 'directa');
 	}
 
 	public function tieneReservas($id){
@@ -82,21 +102,44 @@ class HomeSwitch
 		$resi = $this->residencias->Obtener($idresi);
 		return $resi;
 	}
-
 	public function listarResidencias(){
 		return $this->residencias->listar();
 	}
 	public function solicitoPremium($usu){
 		$this->solicitudes->registrarSolicitud($usu);
-
 	}
 	public function solicitudPendiente($usu){
 		return $this->solicitudes->tienePendiente($usu->__GET('username'));
-
 	}
-
 	public function listarSolicitudes(){
 		return $this->solicitudes->listar();
 	}
+	public function aceptarPremium($usu){
+		$this->solicitudes->contestarSolicitud($usu , "aceptado");
+		$this->usuarios->ascenderPremium($usu);
+	}
+	public function rechazarPremium($usu){
+		$this->solicitudes->contestarSolicitud($usu , "rechazado");
+	}
+	public function terminarSolicitud($usu){
+		$this->solicitudes->terminarSolicitud($usu);
+	}
+	public function consultarEstadoSolicitud($usu){
+		return $this->solicitudes->consultar($usu);
+	}
+	public function reservasDeResidenciaBasico($idresi){
+		return $this->reservas->listarSubastasResidencia($idresi);
+	}
+	public function reservasDeResidenciaBasicoAbiertas($idresi){
+		return $this->reservas->listarResidenciaAbiertas($idresi);
+	}
 
+	public function reservasDeResidenciaPremiunAbiertas($idresi){
+		return $this->reservas->listarResidenciaAbiertas($idresi);
+	}
+	public function reservarDirecta($dir, $usu){
+		$dir->reservar($usu);
+		$this->reservas->cerrar($dir->__GET('numReserva'));
+		$this->usuarios->restarToken($usu->__GET('tokens') , $usu->__GET('username'));
+	}
 }

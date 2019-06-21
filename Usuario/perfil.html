@@ -41,14 +41,22 @@
                     </div><div class="form-row form-group">
                         <div class="col-sm-4 label-column"><label class="col-form-label" >Vencimiento</label></div>
                         <div class="col-sm-6 input-column">
-                            <h2> <?php echo $usu->__GET('vencimiento')?></h2>
+                            <h2> <?php echo convertirAMes($usu->__GET('vencimiento'))?></h2>
                         </div>
-                    </div><div class="form-row form-group">
-                        <div class="col-sm-4 label-column"><label class="col-form-label" >CVC</label></div>
+                    </div>
+                    <div class="form-row form-group">
+                        <div class="col-sm-4 label-column"><label class="col-form-label" >Codigo de Seguridad</label></div>
                         <div class="col-sm-6 input-column">
                             <h2> <?php echo $usu->__GET('codSeg')?></h2>
                         </div>
                     </div>
+                    <div class="form-row form-group">
+                        <div class="col-sm-4 label-column"><label class="col-form-label" >Tokens restantes</label></div>
+                        <div class="col-sm-6 input-column">
+                            <h2> <?php echo $usu->__GET('tokens')?></h2>
+                        </div>
+                    </div>
+
                      <div class="buttons">
                         <a class="btn btn-primary" role="button" 
                         href="../registrarse.php?username=<?php echo $usu->__GET('username')?>">
@@ -57,30 +65,7 @@
                     </div>
                 </div>
                 </form>
-                <style>
-                    .demo-container {
-                        width: 100%;
-                        max-width: 350px;
-                        margin: 50px auto;
-                    }
-
-                    form {
-                        margin: 30px;
-                    }
-                    input {
-                        width: 200px;
-                        margin: 10px auto;
-                        display: block;
-                    }
-
-                </style>
-                <script src="../assets/js/card.js"></script>
-                <script>
-                    new Card({
-                        form: document.querySelector('form'),
-                        container: '.card-wrapper'
-                    });
-                </script>
+            
             </div>
         </div>
     </div>

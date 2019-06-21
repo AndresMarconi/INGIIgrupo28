@@ -1,5 +1,5 @@
     <div class="container" style="min-height: 500px !important">
-       <?php foreach($home->listarSubastasAbiertas() as $r): ?> 
+       <?php foreach($home->listarReservasAbiertas() as $r): ?> 
         <div class="row" style="margin: 20px">
             <div class="col">
                 <div class="carousel slide" data-ride="carousel" id="carousel-<?php echo $r->__GET('idResidencia')->__GET('idresidencia')?>">
@@ -31,16 +31,37 @@
                 <p> Habitaciones: <?php echo $r->__GET('idResidencia')->__GET('cantpersonas')?></p>
             </div>
             <div class="col d-flex flex-column align-items-center">
-                <h1>PUJA ACTUAL</h1>
-                <?php $max = $r->pujaMaxima()?>
-                <h1>$ <?php echo $max;?></h1>
-                <form class="d-flex flex-column" method="post" 
-                action="?num=<?php echo $r->__GET('numReserva')?>">
-                    <input class="border rounded-0 form-control" type="number" step="0.01" placeholder="ingrese su puja" name="monto">
-                    <button class="btn btn-primary" type="submit" name="pujar">PUJAR</button>
-                </form>
+                <?php echo $r->boton($usu)?>
             </div>
         </div>
         <br><br>
         <?php endforeach;?>
+
     </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">HAZTE PREMIUM</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Para poder reservarla tenes que ser premium!
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <?php if(!$home->solicitudPendiente($usu)){?>
+                <form method="post" action="?solicito=1">
+                <button type="submit" class="btn btn-primary">Solicite su plan premium</button>
+                <?php } else {
+                echo "<p>Solicitud pendiente</p>";
+            }?>
+
+              </div>
+            </div>
+          </div>
+        </div>

@@ -21,20 +21,23 @@ class usuarioModel
 		try
 		{
 			$result = array();
-			$stm = $this->pdo->prepare("SELECT * FROM usuarios");
+			$stm = $this->pdo->prepare("SELECT * FROM usuario");
 			$stm->execute();
 			foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r)
 			{
-				$usr = new usuario();
+				$usr = new $r->tipo();
 
 				$usr->__SET('dni', $r->dni);
 				$usr->__SET('nombre', $r->nombre);
 				$usr->__SET('apellido', $r->apellido);
-				$usr->__SET('contra', $r->contra);
-				$usr->__SET('idciudad', $r->idciudad);
+				$usr->__SET('contra', $r->contraseña);
+				$usr->__SET('username', $r->username);
 				$usr->__SET('direccion', $r->direccion);
-				$usr->__SET('email', $r->email);
-				$usr->__SET('ntel', $r->ntel);			
+				$usr->__SET('email', $r->mail);
+				$usr->__SET('telefono', $r->telefono);
+				$usr->__SET('nroTarjeta', $r->numTarjeta);
+				$usr->__SET('codSeg', $r->codSegTarjeta);
+				$usr->__SET('vencimiento', $r->vencimientoTarjeta);			
 
 				$result[] = $usr;
 			}
@@ -70,6 +73,7 @@ class usuarioModel
 				$usr->__SET('nroTarjeta', $r->numTarjeta);
 				$usr->__SET('vencimiento', $r->vencimientoTarjeta);
 				$usr->__SET('codSeg', $r->codSegTarjeta);
+				$usr->__SET('tokens', $r->cantReservas);
 				
 			} else{
 				$usr = new usuario();
@@ -101,14 +105,13 @@ class usuarioModel
 		try 
 		{
 			$sql = "UPDATE usuario SET
-						dni                 = ?,
 						username 			= ?, 
 						nombre             	= ?,
 						apellido           	= ?,
-						contraseña              = ?,
+						contraseña          = ?,
 						direccion          	= ?, 
 						mail     			= ?, 
-						telefono	     		= ?,
+						telefono	     	= ?,
 						vencimientoTarjeta 	= ?,
 						codSegTarjeta 		= ?,
 						numTarjeta			= ?
@@ -117,7 +120,6 @@ class usuarioModel
 			$this->pdo->prepare($sql)
 			     ->execute(
 				array(
-					$data->__GET('dni'),
 					$data->__GET('username'),
 					$data->__GET('nombre'),
 					$data->__GET('apellido'),
@@ -141,13 +143,12 @@ class usuarioModel
 	{
 		try 
 		{
-		$sql = "INSERT INTO usuario(dni, tipo, contraseña, cantReservas, nombre, apellido, mail, telefono, direccion, inicioContrato, finContrato, numTarjeta, vencimientoTarjeta, codSegTarjeta, username) 
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		$sql = "INSERT INTO usuario(tipo, contraseña, cantReservas, nombre, apellido, mail, telefono, direccion, inicioContrato, finContrato, numTarjeta, vencimientoTarjeta, codSegTarjeta, username) 
+			VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		$this->pdo->prepare($sql)
 		     ->execute(
 			array(
-				$data->__GET('dni'),
-				1,
+				'basico',
 				$data->__GET('contra'),
 				2,
 				$data->__GET('nombre'),
@@ -181,6 +182,36 @@ class usuarioModel
 			} else {
 				return false;
 			}
+		} catch (Exception $e) 
+		{
+			die($e->getMessage());
+		}
+	}
+
+	public function ascenderPremium($user)
+	{
+		try 
+		{
+			$sql = "UPDATE usuario SET tipo = ? WHERE username = ?";
+
+			$this->pdo->prepare($sql)
+			     ->execute(
+				array(
+					'premiun',
+					$user
+					)
+				);
+		} catch (Exception $e) 
+		{
+			die($e->getMessage());
+		}
+	}
+
+	public function restarToken($tok, $user){
+		try {
+			$sql = "UPDATE usuario SET cantReservas = ? WHERE username = ?";
+			$this->pdo->prepare($sql)
+			     ->execute(array($tok-1, $user));
 		} catch (Exception $e) 
 		{
 			die($e->getMessage());

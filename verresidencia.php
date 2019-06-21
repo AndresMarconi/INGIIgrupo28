@@ -11,4 +11,8 @@
 			include('footer.html');
 		echo "\n".'</body>'."\n";
 	echo '</html>';
+
+	if (isset($_REQUEST['cerrar'])){
+		$usu->cerrarSesion();
+	}
 ?>

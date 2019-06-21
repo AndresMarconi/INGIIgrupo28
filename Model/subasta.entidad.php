@@ -41,5 +41,9 @@ class Subasta extends Reserva
 	public function pujar($monto, $usu){
 		$this->historial->registrarPuja($this->numReserva, $monto, $usu);
 	}
+
+	public function boton(){
+		return "<p><a class='btn btn-primary' role='button' href='subasta.php?sub=".$this->numReserva."'>VE A PUJAR</a></p>";
+	}
 }
 ?>

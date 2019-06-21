@@ -10,13 +10,12 @@
 	}
 	$usu = $home->obtenerUsu($_SESSION['usu']);
 	$navbar = "navbar".$usu->tipo().".html";
-
 	echo '<!DOCTYPE html>'."\n";
 	echo '<html>'."\n";
 		include('head.html');
 		echo '<body>'."\n";
 			include($navbar);
-			include('versubasta.html');
+				include('listadoResidencias.html');
 			include('footer.html');
 		echo "\n".'</body>'."\n";
 	echo '</html>';
@@ -32,5 +31,4 @@
 		echo "window.location='index.php';";
 		echo "</script>";
 	}
-
 ?>

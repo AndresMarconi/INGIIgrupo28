@@ -2,7 +2,7 @@
             <nav style="box-shadow: 0 4px 8px 0 black;" class="navbar navbar-light navbar-expand-md navigation-clean-button">
                 <div class="container">
                     <a class="navbar-brand" href="index.php">
-                        <img class="d-inline-block" src="assets/img/HSH-Logo.svg" id="logo">Home Switch Home
+                        <img class="d-inline-block" src="../assets/img/HSH-Logo.svg" id="logo">Home Switch Home
                     </a>
                     <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1">
                         <span class="sr-only">Toggle navigation</span>
@@ -10,9 +10,16 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navcol-1">
                         <ul class="nav navbar-nav mr-auto">
-                             <li class="nav-item" role="presentation"><a class="nav-link" href="listadoResidencias.php">Nuestras residencias</a></li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" href="listadoResidencias.php">Nuestras residencias</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" href="perfil.php">Ver Perfil</a>
+                            </li>
                         </ul>
-                        <span class="navbar-text actions"> <a href="login.php" class="login">Iniciar Sesión</a><a class="btn btn-light action-button" role="button" href="registrarse.php">Registrarme</a></span>
+                        <span class="navbar-text actions"> 
+                            <a class="btn btn-light action-button" role="button" href="?cerrar=1">Cerrar Session</a>
+                        </span>
                     </div>
                 </div>
             </nav>

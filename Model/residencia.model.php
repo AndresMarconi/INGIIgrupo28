@@ -140,11 +140,12 @@ class residenciaModel
 	{
 		try 
 		{
-		$sql = "INSERT INTO residencia(descripcion, direccion, nombre, pais, ciudad, cantpersonas) 
-				VALUES (?, ?, ?, ?, ?, ?)";
+		$sql = "INSERT INTO residencia(idresidencia, descripcion, direccion, nombre, pais, ciudad, cantpersonas) 
+				VALUES (?, ?, ?, ?, ?, ?, ?)";
 		$this->pdo->prepare($sql)
 		     ->execute(
 			array(
+				$this->sigId(),
 				$data->__GET('descripcion'),
 				$data->__GET('direccion'),
 				$data->__GET('nombre'),

@@ -9,18 +9,17 @@
 		echo "</script>";
 	}
 	$usu = $home->obtenerUsu($_SESSION['usu']);
+	$resi = $home->obtenerResidencia($_REQUEST['idres']);
 	$navbar = "navbar".$usu->tipo().".html";
-
 	echo '<!DOCTYPE html>'."\n";
 	echo '<html>'."\n";
 		include('head.html');
 		echo '<body>'."\n";
 			include($navbar);
-			include('versubasta.html');
+			include('verresidencia.html');
 			include('footer.html');
 		echo "\n".'</body>'."\n";
 	echo '</html>';
-
 	if (isset($_REQUEST['cerrar'])){
 		$usu->cerrarSesion();
 	}
@@ -32,5 +31,4 @@
 		echo "window.location='index.php';";
 		echo "</script>";
 	}
-
 ?>

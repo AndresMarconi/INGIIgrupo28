@@ -21,5 +21,17 @@ class Premiun extends Usuario
 //Getter y Setter
 	public function __GET($k){ return $this->$k; }
 	public function __SET($k, $v){ return $this->$k = $v; }
+
+	public function listarReservasResidenciaAbiertas($home, $idresi){
+		return $home->reservasDeResidenciaPremiunAbiertas($idresi);
+	}
+
+	public function tipo(){
+		return "Premium";
+	}
+
+	public function verReservas($home){
+		return $home->listarReservasAbiertas();
+	}
 }
 ?>

@@ -18,5 +18,9 @@ class HotSale extends Reserva
 		
 		return $str;
 	}
+
+	public function boton(){
+		return "<p><a class='btn btn-primary' role='button' href='#'>VE Y APROVECHA EL HOTSALE</a></p>";
+	}
 }
 ?>

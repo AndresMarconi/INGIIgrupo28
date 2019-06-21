@@ -6,34 +6,36 @@ class usuario
 	private $apellido;
 	private $contra;
 	private $username;
-	private $ciudad;
 	private $direccion;
 	private $email;
 	private $telefono;
 	private $nroTarjeta;
 	private $codSeg;
 	private $vencimiento;
+	private $tokens;
+
 
 // Constructor
 	public function __CONSTRUCT(){}
 
-	public function armar($datos){
-		$this->dni = $datos[0];
-		$this->nombre = $datos[1];
-		$this->apellido = $datos[2];
-		$this->username = $datos[3];
-		$this->contra = $datos[4];
-		$this->direccion = $datos[5];
-		$this->email = $datos[6];
-		$this->telefono = $datos[7];
-		$this->nroTarjeta = $datos[8];
-		$this->vencimiento = $datos[9];
-		$this->codSeg = $datos[10];
-	}
-
-//Getter y Setter
+	//Getter y Setter
 	public function __GET($k){ return $this->$k; }
 	public function __SET($k, $v){ return $this->$k = $v; }
+
+	public function armar($datos){
+		$this->__SET('nombre', $datos[0]);
+		$this->__SET('apellido', $datos[1]);
+		$this->__SET('username', $datos[2]);
+		$this->__SET('contra', $datos[3]);
+		$this->__SET('direccion', $datos[4]);
+		$this->__SET('email', $datos[5]);
+		$this->__SET('telefono', $datos[6]);
+		$this->__SET('nroTarjeta', $datos[7]);
+		$this->__SET('vencimiento', $datos[8]);
+		$this->__SET('codSeg', $datos[9]);
+	}
+
+
 
 //session	
 	public function acceso($contra){
@@ -60,37 +62,23 @@ class usuario
 		exit;
 	}
 
-//Chat
-	public function iniciarChat(){
-		$this->chat = new chat($this->nombre());
+
+	public function listarReservasResidencia($home, $idresi){
+		return $home->reservasDeResidenciaBasico($idresi);
 	}
 
-	public function leerChat(){
-		$this->chat->leerChat();
+	public function listarReservasResidenciaAbiertas($home, $idresi){
+		return $home->reservasDeResidenciaBasicoAbiertas($idresi);
 	}
 
-	public function escribir($mensaje){
-		$txt = "<p class='lead text-right border rounded' style='background-color: #0bf114;padding: 10px;'>".$mensaje."</p>\n";
-		$this->chat->escribir($txt);
+	public function tieneTokensSuficientes(){
+		if($this->__GET('tokens') == 0){
+			return false;
+		}
+		else{
+			return true;
+		}
 	}
 
-//otros
-	public function nombre(){ return $str=($this->nombre.$this->apellido); }
-
-	public function miplan(){
-		return $this->plan->miEstado();
-	}
-
-	public function asignarPlan($nroplan){
-		$this->plan->__SET('nroplan', $nroplan);
-		$this->plan->__SET('actual', 1);
-		$this->plan->__SET('estado', 'activo');	
-	}
-
-	public function asignarRutina($nrorut){
-		$this->rutina->__SET('nrorutina', $nrorut);
-		$this->rutina->__SET('actual', 1);
-		$this->rutina->__SET('estado', 'activo');	
-	}
 
 }

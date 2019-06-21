@@ -22,4 +22,5 @@
 	require_once '../Model/hotsale.entidad.php';
 	//require_once '../Model/hotsale.model.php';
 	require_once'../Model/solicitudes.model.php';
+	require_once'../Model/solicitud.entidad.php';
 ?>

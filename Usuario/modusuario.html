@@ -4,55 +4,49 @@
                 <form class="custom-form" method="post" enctype="multipart/form-data">
                     <h1>Modificar Datos</h1>
                     <div class="form-row form-group">
-                        <div class="col-sm-4 label-column"><label class="col-form-label">DNI</label></div>
-                        <div class="col-sm-6 input-column"><input class="form-control" type="text" name="dni"
-                            value="<?php echo $usu->__GET('dni')?>"></div>
+                        <div class="col-sm-4 label-column"><label class="col-form-label" >Nombre Usuario</label></div>
+                        <div class="col-sm-6 input-column"><input class="form-control" type="text" name="nick"
+                            value="<?php echo $usu->__GET('username')?>" required></div>
                     </div>
                     <div class="form-row form-group">
                         <div class="col-sm-4 label-column"><label class="col-form-label">Nombre</label></div>
-                        <div class="col-sm-6 input-column"><input class="form-control" type="text" name="nombre" value="<?php echo $usu->__GET('nombre')?>"></div>
+                        <div class="col-sm-6 input-column"><input class="form-control" type="text" name="nombre" value="<?php echo $usu->__GET('nombre')?>" required></div>
                     </div>
                     <div class="form-row form-group">
                         <div class="col-sm-4 label-column"><label class="col-form-label">Apellido</label></div>
                         <div class="col-sm-6 input-column"><input class="form-control" type="text" name="apellido"
-                            value="<?php echo $usu->__GET('apellido')?>"></div>
+                            value="<?php echo $usu->__GET('apellido')?>" required></div>
                     </div>
                     <div class="form-row form-group">
                         <div class="col-sm-4 label-column"><label class="col-form-label" >Direccion</label></div>
                         <div class="col-sm-6 input-column"><input class="form-control" type="text" name="direccion"
-                            value="<?php echo $usu->__GET('direccion')?>"></div>
+                            value="<?php echo $usu->__GET('direccion') ?>" required></div>
                     </div>
                     <div class="form-row form-group">
                         <div class="col-sm-4 label-column"><label class="col-form-label" >Mail</label></div>
-                        <div class="col-sm-6 input-column"><input class="form-control" type="text" name="mail"
-                            value="<?php echo $usu->__GET('email')?>"></div>
+                        <div class="col-sm-6 input-column"><input class="form-control" type="email" name="mail"
+                            value="<?php echo $usu->__GET('email')?>" required></div>
                     </div>
                     <div class="form-row form-group">
                         <div class="col-sm-4 label-column"><label class="col-form-label" >Telefono</label></div>
-                        <div class="col-sm-6 input-column"><input class="form-control" type="text" name="telefono"
-                            value="<?php echo $usu->__GET('telefono')?>"></div>
-                    </div>
-                    <div class="form-row form-group">
-                        <div class="col-sm-4 label-column"><label class="col-form-label" >Nombre Usuario</label></div>
-                        <div class="col-sm-6 input-column"><input class="form-control" type="text" name="username"
-                            value="<?php echo $usu->__GET('username')?>"></div>
+                        <div class="col-sm-6 input-column"><input class="form-control" type="tel" pattern="[0-9]{10}" name="telefono" value="<?php echo $usu->__GET('telefono')?>" required></div>
                     </div>
                     <div class="form-row form-group">
                         <div class="col-sm-4 label-column"><label class="col-form-label" >Contraseña</label></div>
-                        <div class="col-sm-6 input-column"><input class="form-control" type="password" name="contraseña" value="<?php echo $usu->__GET('contra')?>">
+                        <div class="col-sm-6 input-column"><input class="form-control" type="password" name="contraseña" value="<?php echo $usu->__GET('contra')?>" required>
                         </div>
                     </div>
                     <div class="form-row form-group">
                         <div class="col-sm-4 label-column"><label class="col-form-label" >Numero Tarjeta</label></div>
-                        <div class="col-sm-6 input-column"><input class="form-control" type="number" name="nroTarjeta" value="<?php echo $usu->__GET('nroTarjeta')?>"></div>
+                        <div class="col-sm-6 input-column"><input class="form-control" type="tel" name="nroTarjeta" pattern="[0-9]{16}" value="<?php echo $usu->__GET('nroTarjeta')?>" required></div>
                     </div>
                     <div class="form-row form-group">
                         <div class="col-sm-4 label-column"><label class="col-form-label" >Codigo de Seguridad</label></div>
-                        <div class="col-sm-6 input-column"><input class="form-control" type="number" name="codSeg"value="<?php echo $usu->__GET('codSeg')?>"></div>
+                        <div class="col-sm-6 input-column"><input class="form-control" type="tel" pattern="[0-9]{3}" name="codSeg" value="<?php echo $usu->__GET('codSeg')?>" required></div>
                     </div>
                     <div class="form-row form-group">
                         <div class="col-sm-4 label-column"><label class="col-form-label" >Fecha de Vencimiento</label></div>
-                        <div class="col-sm-6 input-column"><input class="form-control" type="text" name="vencimiento" value="<?php echo $usu->__GET('vencimiento')?>"></div>
+                        <div class="col-sm-6 input-column"><input class="form-control" type="month" min="<?php echo mesActual() ?>" name="vencimiento" value="<?php echo convertirAMes($usu->__GET('vencimiento'))?>" required></div>
                     </div>
                     <input type="hidden" name="usuarioViejo" value="<?php echo $usu->__GET('username')?>">
                     <button class="btn btn-primary submit-button" type="submit" name="modUsuario">Guardar</button>

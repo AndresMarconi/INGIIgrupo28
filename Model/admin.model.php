@@ -113,14 +113,12 @@ class adminModel
 		}
 	}
 
-	public function existe($id)
-	{
+	public function existe($id){
 		try 
 		{
 			$stm = $this->pdo->prepare("SELECT * FROM usuarios WHERE dni = ?");
 			$stm->execute(array($id));
 			$r = $stm->fetch(PDO::FETCH_OBJ);
-
 			if (mysqli_num_rows($r)==1){
 				return true;
 			} else {
@@ -132,4 +130,47 @@ class adminModel
 		}
 	}
 	
+	public function cambiarPrecios($basico, $premiun){
+		try 
+		{
+			$sql = "UPDATE precios SET basico = ?, premiun	= ? WHERE id = 1";
+			$this->pdo->prepare($sql)->execute(array($basico, $premiun));
+		} catch (Exception $e) 
+		{
+			die($e->getMessage());
+		}
+	}
+
+	public function precioBasico()
+	{
+		try 
+		{
+			$stm = $this->pdo
+			          ->prepare("SELECT basico from precios WHERE id = 1");
+			     
+			$stm->execute();
+			$r = $stm->fetch(PDO::FETCH_OBJ);
+			
+			return $r->basico;
+		} catch (Exception $e) 
+		{
+			die($e->getMessage());
+		}
+	}
+
+	public function precioPremium(){
+		try 
+		{
+			$stm = $this->pdo
+			          ->prepare("SELECT premiun from precios WHERE id = 1");
+			     
+			$stm->execute();
+			$r = $stm->fetch(PDO::FETCH_OBJ);
+			
+			return $r->premiun;
+		} catch (Exception $e) 
+		{
+			die($e->getMessage());
+		}
+	}
 }

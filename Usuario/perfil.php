@@ -9,16 +9,35 @@
 		echo "</script>";
 	}
 	$usu = $home->obtenerUsu($_SESSION['usu']);
+	$navbar = "navbar".$usu->tipo().".html";
 	echo '<!DOCTYPE html>'."\n";
 	echo '<html>'."\n";
 		include('head.html');
 		echo '<body>'."\n";
-			include('navbar.html');
+			include($navbar);
 			include('perfil.html');
 			include('footer.html');
 		echo "\n".'</body>'."\n";
 	echo '</html>';
-		if (isset($_REQUEST['cerrar'])){
+
+	function convertirAMes($mes){
+		$año = substr($mes, 0, 4);
+		$month = substr($mes, 5, 2);
+		$fecha = date_create();
+		date_date_set($fecha, $año, $month, 1);
+		return date_format($fecha, 'Y-m');
+	}
+
+	if (isset($_REQUEST['cerrar'])){
 		$usu->cerrarSesion();
 	}
+
+	if (isset($_REQUEST['solicito'])){
+		$home->solicitoPremium($usu->__GET('username'));
+		echo "<script languaje= 'javascript'>";
+		echo "alert ('Se Registro tu solicitud');";
+		echo "window.location='index.php';";
+		echo "</script>";
+	}
+
 ?>

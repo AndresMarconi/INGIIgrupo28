@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-06-2019 a las 21:46:47
+-- Tiempo de generación: 19-06-2019 a las 17:44:08
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 5.6.20
 
@@ -27,7 +27,6 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `administrador` (
-  `dni` int(11) NOT NULL,
   `username` varchar(30) NOT NULL,
   `nombre` varchar(30) NOT NULL,
   `apellido` varchar(30) NOT NULL,
@@ -39,32 +38,8 @@ CREATE TABLE `administrador` (
 -- Volcado de datos para la tabla `administrador`
 --
 
-INSERT INTO `administrador` (`dni`, `username`, `nombre`, `apellido`, `mail`, `contraseña`) VALUES
-(11222333, 'admin', 'unNombre', 'unApellido', 'unMAil@gmail', 'admin');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `directa`
---
-
-CREATE TABLE `directa` (
-  `numreserva` int(11) NOT NULL,
-  `idresidencia` int(11) NOT NULL,
-  `dni` int(11) NOT NULL,
-  `disponibilidaddesde` date NOT NULL,
-  `disponibilidadhasta` date NOT NULL,
-  `fechainicio` date NOT NULL,
-  `semana` int(3) NOT NULL,
-  `año` int(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `directa`
---
-
-INSERT INTO `directa` (`numreserva`, `idresidencia`, `dni`, `disponibilidaddesde`, `disponibilidadhasta`, `fechainicio`, `semana`, `año`) VALUES
-(1, 1, 11222333, '0000-00-00', '0000-00-00', '2019-02-02', 0, 0);
+INSERT INTO `administrador` (`username`, `nombre`, `apellido`, `mail`, `contraseña`) VALUES
+('admin', 'unNombre', 'unApellido', 'unMAil@gmail', 'admin');
 
 -- --------------------------------------------------------
 
@@ -75,46 +50,25 @@ INSERT INTO `directa` (`numreserva`, `idresidencia`, `dni`, `disponibilidaddesde
 CREATE TABLE `historialdepujas` (
   `username` varchar(30) NOT NULL,
   `idsubasta` int(11) NOT NULL,
-  `montopuja` int(11) NOT NULL,
-  `mail` varchar(30) NOT NULL
+  `montopuja` float(7,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `historialdepujas`
 --
 
-INSERT INTO `historialdepujas` (`username`, `idsubasta`, `montopuja`, `mail`) VALUES
-('1', 3, 400, 'unmail@gmail.com'),
-('1', 4, 550, 'unmail@gmail.com'),
-('1', 3, 550, 'unmail@gmail.com'),
-('1', 3, 700, 'asdf@gmail.com'),
-('1', 4, 800, 'otromail@gmail.com'),
-('macarena.sanchez', 8, 200, '');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `hotsale`
---
-
-CREATE TABLE `hotsale` (
-  `numreserva` int(11) NOT NULL,
-  `idresidencia` int(11) NOT NULL,
-  `dni` int(11) NOT NULL,
-  `precio` int(11) NOT NULL,
-  `disponibilidaddesde` date NOT NULL,
-  `disponibilidadhasta` date NOT NULL,
-  `fechainicio` date NOT NULL,
-  `semana` int(3) NOT NULL,
-  `año` int(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `hotsale`
---
-
-INSERT INTO `hotsale` (`numreserva`, `idresidencia`, `dni`, `precio`, `disponibilidaddesde`, `disponibilidadhasta`, `fechainicio`, `semana`, `año`) VALUES
-(2, 1, 11222333, 100, '0000-00-00', '0000-00-00', '2019-02-02', 0, 0);
+INSERT INTO `historialdepujas` (`username`, `idsubasta`, `montopuja`) VALUES
+('1', 3, 400.00),
+('1', 4, 550.00),
+('1', 3, 550.00),
+('1', 3, 700.00),
+('1', 4, 800.00),
+('macarena.sanchez', 8, 200.00),
+('macarena.sanchez', 10, 200.00),
+('macarena.sanchez', 12, 300.30),
+('otroUser2', 10, 210.00),
+('otroUser123', 13, 200.00),
+('guille', 9, 1.00);
 
 -- --------------------------------------------------------
 
@@ -132,15 +86,71 @@ CREATE TABLE `pago` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `reservasconcretadas`
+-- Estructura de tabla para la tabla `peticiones`
 --
 
-CREATE TABLE `reservasconcretadas` (
-  `identificador` int(11) NOT NULL,
-  `dni` int(11) NOT NULL,
-  `semanarealizada` date NOT NULL,
-  `idreserva` int(11) NOT NULL
+CREATE TABLE `peticiones` (
+  `username` varchar(30) NOT NULL,
+  `estado` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `peticiones`
+--
+
+INSERT INTO `peticiones` (`username`, `estado`) VALUES
+('macarena.sanchez', 'esperandoRespuesta'),
+('otroUser2', 'esperandoRespuesta');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `precios`
+--
+
+CREATE TABLE `precios` (
+  `id` int(1) NOT NULL,
+  `basico` float(7,2) NOT NULL,
+  `premiun` float(7,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `precios`
+--
+
+INSERT INTO `precios` (`id`, `basico`, `premiun`) VALUES
+(1, 1500.50, 3400.75);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `reserva`
+--
+
+CREATE TABLE `reserva` (
+  `numreserva` int(11) NOT NULL,
+  `tipo` varchar(11) NOT NULL,
+  `idresidencia` int(11) NOT NULL,
+  `preciobase` float(7,2) NOT NULL,
+  `fechainicio` date NOT NULL,
+  `semana` int(3) NOT NULL,
+  `año` int(5) NOT NULL,
+  `estado` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `reserva`
+--
+
+INSERT INTO `reserva` (`numreserva`, `tipo`, `idresidencia`, `preciobase`, `fechainicio`, `semana`, `año`, `estado`) VALUES
+(9, 'directa', 2, 0.11, '0000-00-00', 22, 2019, 0),
+(10, 'subasta', 2, 99.00, '0000-00-00', 25, 2019, 0),
+(11, 'hotsale', 2, 0.11, '0000-00-00', 27, 2019, 1),
+(12, 'subasta', 3, 200.00, '0000-00-00', 27, 2019, 1),
+(13, 'subasta', 9, 100.00, '0000-00-00', 25, 2019, 1),
+(14, 'directa', 1, 333.33, '2019-06-06', 33, 2019, 1),
+(15, 'subasta', 2, 99.00, '2019-06-16', 29, 2019, 1),
+(16, 'directa', 4, 700.00, '2019-06-18', 50, 2021, 1);
 
 -- --------------------------------------------------------
 
@@ -150,7 +160,6 @@ CREATE TABLE `reservasconcretadas` (
 
 CREATE TABLE `residencia` (
   `idresidencia` int(11) NOT NULL,
-  `dni` int(11) NOT NULL,
   `descripcion` text NOT NULL,
   `direccion` varchar(50) NOT NULL,
   `nombre` varchar(30) NOT NULL,
@@ -163,46 +172,14 @@ CREATE TABLE `residencia` (
 -- Volcado de datos para la tabla `residencia`
 --
 
-INSERT INTO `residencia` (`idresidencia`, `dni`, `descripcion`, `direccion`, `nombre`, `pais`, `ciudad`, `cantpersonas`) VALUES
-(1, 11222333, 'unaDescrip', 'unaDir', 'unNombre', 'unPais', 'unaCiudad', 3),
-(2, 11222333, 'unaDescrip2', 'unaDir2', 'unNombre2', 'unPais2', 'unaCiudad2', 2),
-(3, 0, 'unaDescripcionNueva2', 'unaDirNueva1', 'unnombreNuevo1', 'unPaisNuevo3', 'unaCiudadNueva1', 2),
-(4, 0, 'unaDescripcionNueva2', 'unaDirNueva2', 'unnombreNuevo2', 'unPaisNuevo5', 'unaCiudadNueva1', 2),
-(9, 0, 'unaDescripcionNueva3', 'unaDir', 'unNombre1', 'unPaisNuevo7', 'unaCiudadNueva1', 3);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `subasta`
---
-
-CREATE TABLE `subasta` (
-  `numreserva` int(11) NOT NULL,
-  `idresidencia` int(11) NOT NULL,
-  `dni` int(11) NOT NULL,
-  `preciobase` float(7,2) NOT NULL,
-  `ganador` int(11) NOT NULL,
-  `disponibilidaddesde` date NOT NULL,
-  `disponibilidadhasta` date NOT NULL,
-  `fechainicio` date NOT NULL,
-  `semana` int(3) NOT NULL,
-  `año` int(5) NOT NULL,
-  `estado` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `subasta`
---
-
-INSERT INTO `subasta` (`numreserva`, `idresidencia`, `dni`, `preciobase`, `ganador`, `disponibilidaddesde`, `disponibilidadhasta`, `fechainicio`, `semana`, `año`, `estado`) VALUES
-(3, 1, 11222333, 500.00, 0, '0000-00-00', '0000-00-00', '2019-02-02', 0, 0, 0),
-(4, 3, 0, 501.00, 0, '0000-00-00', '0000-00-00', '2019-05-27', 0, 0, 0),
-(5, 1, 0, 500.90, 0, '0000-00-00', '0000-00-00', '2019-05-15', 0, 0, 0),
-(6, 4, 0, 300.44, 0, '0000-00-00', '0000-00-00', '0000-00-00', 0, 0, 1),
-(7, 4, 0, 400.00, 0, '0000-00-00', '0000-00-00', '2019-05-23', 0, 0, 1),
-(8, 1, 0, 1.11, 0, '0000-00-00', '0000-00-00', '2019-05-23', 0, 0, 0),
-(9, 2, 0, 0.11, 0, '0000-00-00', '0000-00-00', '0000-00-00', 22, 2019, 1),
-(10, 2, 0, 99.00, 0, '0000-00-00', '0000-00-00', '0000-00-00', 25, 2019, 1);
+INSERT INTO `residencia` (`idresidencia`, `descripcion`, `direccion`, `nombre`, `pais`, `ciudad`, `cantpersonas`) VALUES
+(0, 'unaDescripcionNueva4', 'calle 8 223', 'resiPrueba', 'unPaisNuevo5', 'unaCiudadNueva3', 4),
+(1, 'unaDescrip', 'unaDir', 'unNombre', 'unPais', 'unaCiudad', 3),
+(2, 'unaDescrip2', 'unaDir2', 'unNombre2', 'unPais2', 'unaCiudad2', 2),
+(3, 'unaDescripcionNueva2', 'unaDirNueva1', 'unnombreNuevo1', 'unPaisNuevo3', 'unaCiudadNueva1', 2),
+(4, 'unaDescripcionNueva2', 'unaDirNueva2', 'unnombreNuevo2', 'unPaisNuevo5', 'unaCiudadNueva1', 2),
+(9, 'unaDescripcionNueva3', 'unaDir', 'unNombre1', 'unPaisNuevo7', 'unaCiudadNueva1', 3),
+(10, 'unaDescripcionNueva1', 'unaDirNueva1', 'unNombre', 'unPaisNuevo5', 'unaCiudadNueva2', 4);
 
 -- --------------------------------------------------------
 
@@ -212,19 +189,19 @@ INSERT INTO `subasta` (`numreserva`, `idresidencia`, `dni`, `preciobase`, `ganad
 
 CREATE TABLE `usuario` (
   `dni` int(11) NOT NULL,
-  `tipo` int(1) NOT NULL DEFAULT '1',
+  `tipo` varchar(10) NOT NULL DEFAULT '1',
   `username` varchar(30) NOT NULL,
   `contraseña` varchar(10) NOT NULL,
   `cantReservas` int(1) NOT NULL DEFAULT '2',
   `nombre` varchar(30) NOT NULL,
   `apellido` varchar(30) NOT NULL,
   `mail` varchar(45) NOT NULL,
-  `telefono` int(11) NOT NULL,
+  `telefono` varchar(10) NOT NULL,
   `direccion` varchar(50) NOT NULL,
   `inicioContrato` date NOT NULL,
   `finContrato` date NOT NULL,
-  `numTarjeta` int(11) NOT NULL,
-  `vencimientoTarjeta` varchar(5) NOT NULL,
+  `numTarjeta` varchar(16) NOT NULL,
+  `vencimientoTarjeta` date NOT NULL,
   `codSegTarjeta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -233,8 +210,13 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`dni`, `tipo`, `username`, `contraseña`, `cantReservas`, `nombre`, `apellido`, `mail`, `telefono`, `direccion`, `inicioContrato`, `finContrato`, `numTarjeta`, `vencimientoTarjeta`, `codSegTarjeta`) VALUES
-(28875123, 0, '', 'contraseña', 2, 'tomas', 'orejuela', 'unmail@gmail.com', 2147483647, 'calle 8 223', '0000-00-00', '0000-00-00', 2147483647, '0000-', 123),
-(39089112, 1, 'macarena.sanchez', 'contraseña', 2, 'macarena', 'sanchez', 'unmail@gmail.com', 2147483647, 'calle 13 298', '0000-00-00', '0000-00-00', 2147483647, '12/29', 978);
+(28875123, 'premiun', '', 'contraseña', 2, 'tomas', 'orejuela', 'unmail@gmail.com', '2147483647', 'calle 8 223', '0000-00-00', '0000-00-00', '2147483647', '0000-00-00', 123),
+(39487145, 'premiun', 'guille', 'guille', 1, 'Guille', 'Guillen', 'mail@gmail.com', '2147483647', 'Direccion', '0000-00-00', '0000-00-00', '1212131314141515', '2019-07-01', 221),
+(390891113, 'basico', 'macarena.sanchez', 'contraseña', 2, 'macarena1', 'sanchez1', 'unmail@gmail.com1', '2147483647', 'calle 13 29981', '0000-00-00', '0000-00-00', '2147483647', '0000-00-00', 351),
+(42888999, 'basico', 'otroUser', 'user', 2, 'unnombreNuevo2', 'sanchez', 'unaDir@gmail.com', '2147483647', 'unaDir', '0000-00-00', '0000-00-00', '2147483647', '0000-00-00', 123),
+(41999348, 'basico', 'otroUser123', '12345', 2, 'mario', 'Guillen', 'unmail@gmail.com', '2147483647', 'calle 8 223', '0000-00-00', '0000-00-00', '1212111113131411', '2020-02-01', 129),
+(28875123, 'basico', 'otroUser2', 'contraseña', 2, 'unNombre', 'sanchez', 'unmail@gmail.com', '2147483647', 'calle 8 223', '0000-00-00', '0000-00-00', '2147483647', '0000-00-00', 123),
+(28875123, 'basico', 'user', 'user', 2, 'unNombre', 'roldan', 'unmail@gmail.com', '2344409478', 'unaDirNueva1', '0000-00-00', '0000-00-00', '1212121213131414', '2019-07-01', 112);
 
 --
 -- Índices para tablas volcadas
@@ -244,19 +226,7 @@ INSERT INTO `usuario` (`dni`, `tipo`, `username`, `contraseña`, `cantReservas`,
 -- Indices de la tabla `administrador`
 --
 ALTER TABLE `administrador`
-  ADD PRIMARY KEY (`dni`);
-
---
--- Indices de la tabla `directa`
---
-ALTER TABLE `directa`
-  ADD PRIMARY KEY (`numreserva`);
-
---
--- Indices de la tabla `hotsale`
---
-ALTER TABLE `hotsale`
-  ADD PRIMARY KEY (`numreserva`);
+  ADD PRIMARY KEY (`username`);
 
 --
 -- Indices de la tabla `pago`
@@ -265,10 +235,10 @@ ALTER TABLE `pago`
   ADD PRIMARY KEY (`idpago`);
 
 --
--- Indices de la tabla `reservasconcretadas`
+-- Indices de la tabla `reserva`
 --
-ALTER TABLE `reservasconcretadas`
-  ADD PRIMARY KEY (`identificador`);
+ALTER TABLE `reserva`
+  ADD PRIMARY KEY (`numreserva`);
 
 --
 -- Indices de la tabla `residencia`
@@ -277,26 +247,11 @@ ALTER TABLE `residencia`
   ADD PRIMARY KEY (`idresidencia`);
 
 --
--- Indices de la tabla `subasta`
---
-ALTER TABLE `subasta`
-  ADD PRIMARY KEY (`numreserva`);
-
---
 -- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`dni`);
+  ADD PRIMARY KEY (`username`);
 
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `reservasconcretadas`
---
-ALTER TABLE `reservasconcretadas`
-  MODIFY `identificador` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

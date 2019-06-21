@@ -129,6 +129,10 @@ class admin
 		$this->reservas->cerrar($idreserva);
 	}
 
+	public function abrirSubasta($idreserva){
+		$this->reservas->abrir($idreserva);
+	}
+
 	public function existeReserva($idres, $semana, $año){
 		return $this->reservas->existeReserva($idres, $semana, $año);
 	}
@@ -140,7 +144,5 @@ class admin
 		echo "window.location='index.php';";
 		echo "</script>";
 	}
-
-
-   // fin de subasta
+	// fin de subasta	
 }
