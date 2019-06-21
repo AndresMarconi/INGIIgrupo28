@@ -25,15 +25,12 @@
                                                     
                                                 </td>
                                             <td>
-                                                <div class="buttons">
-                                                    <a class="btn btn-primary" role="button" 
-                                                    href="altaresidencia.php?idres=<?php echo $r->__GET('idresidencia')?>">
-                                                        ACEPTAR
-                                                    </a>
-                                                </div>
+                                                <form method="post" action="?acepto=<?php echo $r->__GET('username')?>">
+                                                    <button class="btn btn-primary">ACEPTAR</button>
+                                                </form>
                                             </td>
                                             <td>
-                                                <form method="post" action="?idElimRes=<?php echo $r->__GET('idresidencia')?>">
+                                                <form method="post" action="?rechazo=<?php echo $r->__GET('username')?>">
                                                     <button class="btn btn-danger">RECHAZAR</button>
                                                 </form>
                                             </td>

@@ -1,0 +1,49 @@
+<div class="container-fluid">
+                <a class="btn btn-link esconder" role="button" href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars"></i></a>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div>
+                            <h1 class="panelAdm">LISTADO DE RESIDENCIAS</h1>
+                            <h1>Residencias</h1>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Username</th>
+                                            <th>Nombre</th>
+                                            <th>Apellido</th>
+                                            <th>Direccion</th>
+                                            <th>Email</th>
+                                            <th>Telefono</th>
+                                            <th>Tipo</th>
+                                            <th>Tarjeta</th>
+                                            <th>Codigo de Seguridad</th>
+                                            <th>Vencimiento</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php foreach($home->listaUsuarios() as $r): ?>
+                                        <tr>
+                                            <td>
+                                                <a href="veruser.php?user=<?php echo $r->__GET('username')?>">
+                                                    <?php echo $r->__GET('username')?>
+                                                </a>            
+                                            </td>
+                                            <td><?php echo $r->__GET('nombre')?></td>
+                                            <td><?php echo $r->__GET('apellido')?></td>
+                                            <td><?php echo $r->__GET('direccion')?></td>
+                                            <td><?php echo $r->__GET('email')?></td>
+                                            <td><?php echo $r->__GET('telefono')?></td>
+                                            <td><?php echo $r->tipo()?></td>
+                                            <td><?php echo $r->__GET('nroTarjeta')?></td>
+                                            <td><?php echo $r->__GET('codSeg')?></td>
+                                            <td><?php echo $r->__GET('vencimiento')?></td>
+                                        </tr>
+                                    <?php endforeach;?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>

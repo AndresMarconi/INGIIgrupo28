@@ -81,14 +81,12 @@
                                             <td><?php echo $r->__GET('fechainicio')?></td>
                                             <td>
                                                 <?php if($r->__GET('estado')){?>
-                                                <form method="post" 
-                                                action="?cerrarSub=<?php echo $r->__GET('numReserva')?>&gan=<?php echo $gan?>">
-                                                    <input type="hidden" name="email<?php echo $r->__GET('numReserva')?>" value="<?php echo $ganador ?>">
-                                                    <button class="btn btn-danger">CERRAR</button>
+                                                <form method="post" action="?cerrardir=<?php echo $r->__GET('numReserva')?>">
+                                                    <button class="btn btn-danger">PASAR A SUBASTA</button>
                                                 </form>
-                                                <?php } else {?>
-                                                    Subasta Cerrada
-                                                <?php }?>
+                                        <?php   } else {
+                                                    echo "La adquirio el usuario ".$r->ganador();    
+                                                }?>
                                             </td>
                                         </tr>
                                     <?php endforeach;?>

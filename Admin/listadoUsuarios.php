@@ -14,28 +14,12 @@
 		include('head.html');
 		echo '<body>'."\n";
 			include('navbar.html');
-				include('listadoSolicitudes.html');
+				include('listadoUsuarios.html');
 			include('footer.html');
 		echo "\n".'</body>'."\n";
 	echo '</html>';
 
 	if (isset($_POST['cerrar'])){
 		$adm->cerrarSesion();
-	}
-
-	if (isset($_REQUEST['acepto'])){
-		$home->aceptarPremium($_REQUEST['acepto']);
-		echo "<script languaje= 'javascript'>";
-		echo "alert ('Solicitud contestada');";
-		echo "window.location='index.php';";
-		echo "</script>";
-	}
-
-	if (isset($_REQUEST['rechazo'])){
-		$home->rechazarPremium($_REQUEST['rechazo']);
-		echo "<script languaje= 'javascript'>";
-		echo "alert ('Solicitud contestada');";
-		echo "window.location='index.php';";
-		echo "</script>";
 	}
 ?>

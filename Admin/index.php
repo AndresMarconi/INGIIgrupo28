@@ -46,6 +46,14 @@
 		echo "</script>";
 	}
 
+	if (isset($_REQUEST['cerrardir'])) {
+		$adm->abrirSubasta($_REQUEST['cerrardir']);
+		echo "<script languaje= 'javascript'>";
+		echo "alert ('Se abrio la subasta de la reserva');";
+		echo "window.location='index.php';";
+		echo "</script>";
+	}
+
 	if (isset($_POST['cerrar'])){
 		$adm->cerrarSesion();
 	}

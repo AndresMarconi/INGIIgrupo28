@@ -59,7 +59,7 @@
 				$resi->__SET('pais', $_POST['pais']);
 				$resi->__SET('descripcion', $_POST['descripcion']);
 				$resi->__SET('cantpersonas', $_POST['cantpersonas']);
-				
+		
 				$resi->cargarImagen($_FILES['imagen1'], 1);
 				$resi->cargarImagen($_FILES['imagen2'], 2);
 				$resi->cargarImagen($_FILES['imagen3'], 3);

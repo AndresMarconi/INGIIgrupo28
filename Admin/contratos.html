@@ -1,0 +1,19 @@
+    <a class="esconder btn btn-link" role="button" href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars"></i></a>
+    <div id="promo" style="background-color: #ffffff;background-image: url(../assets/img/star-sky.jpg&quot;);">
+        <div class="row register-form">
+            <div class="col-md-8 offset-md-2">
+                <form class="custom-form" method="post">
+                    <h1>Precios</h1>
+                    <div class="form-row form-group">
+                        <div class="col-sm-4 label-column"><label class="col-form-label">Precio contrato Basico</label></div>
+                        <div class="col-sm-6 input-column"><input class="form-control" type="number" step="0.01" name="basico" value="<?php echo $home->obtenerPrecioBasico();?>"></div>
+                    </div>
+                    <div class="form-row form-group">
+                        <div class="col-sm-4 label-column"><label class="col-form-label" >Precio contrato Premiun</label></div>
+                        <div class="col-sm-6 input-column"><input class="form-control" type="number" step="0.01" name="premiun" value="<?php echo $home->obtenerPrecioPremium();?>"></div>
+                    </div>
+                    <button class="btn btn-primary submit-button" type="submit" name="actualizar">Actualizar</button>
+                </form>
+            </div>
+        </div>
+    </div>
