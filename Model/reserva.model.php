@@ -16,212 +16,6 @@ class reservaModel
 		}
 	}
 
-	public function Listar($tipo)
-	{
-		try
-		{
-			$result = array();
-			$stm = $this->pdo->prepare("SELECT * FROM reserva s INNER JOIN residencia r ON (s.idresidencia=r.idresidencia) WHERE tipo = ?");
-			$stm->execute(array($tipo));
-			foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r)
-			{
-				$sub = new $tipo();
-				$sub->__SET('numReserva', $r->numreserva);
-				
-				$sub->__SET('residencia', $r->nombre);
-				$sub->__SET('fechainicio', $r->fechainicio);
-				$sub->__SET('año', $r->año);
-				$sub->__SET('semana', $r->semana);
-				$sub->__SET('precioBase', $r->preciobase);
-				$sub->__SET('estado', $r->estado);
-
-				$resi = new residencia();
-
-				$resi->__SET('idresidencia', $r->idresidencia);
-				$resi->__SET('nombre', $r->nombre);
-				$resi->__SET('descripcion', $r->descripcion);
-				$resi->__SET('pais', $r->pais);
-				$resi->__SET('ciudad', $r->ciudad);
-				$resi->__SET('direccion', $r->direccion);
-				$resi->__SET('cantpersonas', $r->cantpersonas);
-
-				$sub->__SET('idResidencia', $resi);		
-
-				$result[] = $sub;
-			}
-			return $result;
-		}
-		catch(Exception $e)
-		{
-			die($e->getMessage());
-		}
-	}
-
-	public function ListarAbiertas($tipo)
-	{
-		try
-		{
-			$result = array();
-			$stm = $this->pdo->prepare("SELECT * FROM reserva s INNER JOIN residencia r ON (s.idresidencia=r.idresidencia) WHERE estado = 1 AND tipo = ?");
-			$stm->execute(array($tipo));
-			foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r)
-			{
-				$sub = new $tipo();
-				$sub->__SET('numReserva', $r->numreserva);
-				
-				$sub->__SET('residencia', $r->nombre);
-				$sub->__SET('año', $r->año);
-				$sub->__SET('semana', $r->semana);
-				$sub->__SET('fechainicio', $r->fechainicio);
-				$sub->__SET('precioBase', $r->preciobase);
-				$sub->__SET('estado', $r->estado);
-
-				$resi = new residencia();
-
-				$resi->__SET('idresidencia', $r->idresidencia);
-				$resi->__SET('nombre', $r->nombre);
-				$resi->__SET('descripcion', $r->descripcion);
-				$resi->__SET('pais', $r->pais);
-				$resi->__SET('ciudad', $r->ciudad);
-				$resi->__SET('direccion', $r->direccion);
-				$resi->__SET('cantpersonas', $r->cantpersonas);
-
-				$sub->__SET('idResidencia', $resi);		
-
-				$result[] = $sub;
-			}
-			return $result;
-		}
-		catch(Exception $e)
-		{
-			die($e->getMessage());
-		}
-	}
-
-	public function ListarReservasAbiertas()
-	{
-		try
-		{
-			$result = array();
-			$stm = $this->pdo->prepare("SELECT * FROM reserva s INNER JOIN residencia r ON (s.idresidencia=r.idresidencia) WHERE estado = 1");
-			$stm->execute();
-			foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r)
-			{
-				$sub = new $r->tipo();
-				$sub->__SET('numReserva', $r->numreserva);
-				
-				$sub->__SET('residencia', $r->nombre);
-				$sub->__SET('año', $r->año);
-				$sub->__SET('semana', $r->semana);
-				$sub->__SET('fechainicio', $r->fechainicio);
-				$sub->__SET('precioBase', $r->preciobase);
-				$sub->__SET('estado', $r->estado);
-
-				$resi = new residencia();
-
-				$resi->__SET('idresidencia', $r->idresidencia);
-				$resi->__SET('nombre', $r->nombre);
-				$resi->__SET('descripcion', $r->descripcion);
-				$resi->__SET('pais', $r->pais);
-				$resi->__SET('ciudad', $r->ciudad);
-				$resi->__SET('direccion', $r->direccion);
-				$resi->__SET('cantpersonas', $r->cantpersonas);
-
-				$sub->__SET('idResidencia', $resi);		
-
-				$result[] = $sub;
-			}
-			return $result;
-		}
-		catch(Exception $e)
-		{
-			die($e->getMessage());
-		}
-	}
-
-	public function ListarXresidencia($idres)
-	{
-		try
-		{
-			$result = array();
-			$stm = $this->pdo->prepare("SELECT * FROM reserva 
-										WHERE (idresidencia = ?)AND((año > ?) OR ((semana >= ?)AND(año = ?)))");
-			$stm->execute(array($idres, date('Y'), date('w'), date('Y')));
-			foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r)
-			{
-				$res = new $r->tipo;
-				$res->__SET('numReserva', $r->numreserva);
-				$res->__SET('fechainicio', $r->fechainicio);
-				$res->__SET('año', $r->año);
-				$res->__SET('semana', $r->semana);
-				$res->__SET('precioBase', $r->preciobase);
-				$res->__SET('estado', $r->estado);		
-
-				$result[] = $res;
-			}
-			return $result;
-		}
-		catch(Exception $e)
-		{
-			die($e->getMessage());
-		}
-	}
-
-	public function listarSubastasResidencia($idresi){
-		try
-		{
-			$result = array();
-			$stm = $this->pdo->prepare("SELECT * FROM reserva 
-										WHERE (tipo != 'directa')AND(idresidencia = ?)
-										AND((año > ?) OR ((semana >= ?)AND(año = ?)))");
-			$stm->execute(array($idresi, date('Y'), date('w'), date('Y')));
-			foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r)
-			{
-				$res = new $r->tipo;
-				$res->__SET('numReserva', $r->numreserva);
-				$res->__SET('fechainicio', $r->fechainicio);
-				$res->__SET('año', $r->año);
-				$res->__SET('semana', $r->semana);
-				$res->__SET('precioBase', $r->preciobase);
-				$res->__SET('estado', $r->estado);		
-
-				$result[] = $res;
-			}
-			return $result;
-		}
-		catch(Exception $e)
-		{
-			die($e->getMessage());
-		}	
-	}
-
-	public function listarResidenciaAbiertas($idresi){
-		try
-		{
-			$result = array();
-			$stm = $this->pdo->prepare("SELECT * FROM reserva 
-										WHERE (estado = 1)AND(idresidencia = ?)
-										AND((año > ?) OR ((semana >= ?)AND(año = ?)))");
-			$stm->execute(array($idresi, date('Y'), date('w'), date('Y')));
-			foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r)
-			{
-				$res = new $r->tipo;
-				$res->__SET('numReserva', $r->numreserva);
-				$res->__SET('fechainicio', $r->fechainicio);
-				$res->__SET('año', $r->año);
-				$res->__SET('semana', $r->semana);
-				$res->__SET('precioBase', $r->preciobase);
-				$res->__SET('estado', $r->estado);		
-
-				$result[] = $res;
-			}
-			return $result;
-		}
-		catch(Exception $e)
-		{
-			die($e->getMessage());
-		}	
-	}
 	public function Obtener($id, $tipo)
 	{
 		try 
@@ -232,9 +26,9 @@ class reservaModel
 			$stm->execute(array($id, $tipo));
 			$r = $stm->fetch(PDO::FETCH_OBJ);
 
-			$sub = new $tipo();
-			$sub->__SET('numReserva', $r->numreserva);
-				
+			$sub = new reserva();
+			$sub->__SET('state', new $r->tipo($r->numreserva));
+			$sub->__SET('numReserva', $r->numreserva);			
 			$sub->__SET('residencia', $r->nombre);
 			$sub->__SET('año', $r->año);
 			$sub->__SET('semana', $r->semana);
@@ -242,7 +36,6 @@ class reservaModel
 			$sub->__SET('estado', $r->estado);
 
 			$resi = new residencia();
-
 			$resi->__SET('idresidencia', $r->idresidencia);
 			$resi->__SET('nombre', $r->nombre);
 			$resi->__SET('descripcion', $r->descripcion);
@@ -250,7 +43,43 @@ class reservaModel
 			$resi->__SET('ciudad', $r->ciudad);
 			$resi->__SET('direccion', $r->direccion);
 			$resi->__SET('cantpersonas', $r->cantpersonas);
+			$sub->__SET('idResidencia', $resi);	
+			
+			return $sub;
+		} catch (Exception $e) 
+		{
+			die($e->getMessage());
+		}
+	}
 
+	public function ObtenerRes($id)
+	{
+		try 
+		{
+			$stm = $this->pdo
+			          ->prepare("SELECT * FROM reserva s INNER JOIN residencia r ON (s.idresidencia=r.idresidencia) WHERE s.numreserva = ?");
+			     
+			$stm->execute(array($id));
+			$r = $stm->fetch(PDO::FETCH_OBJ);
+
+			$sub = new reserva();
+			$sub->__SET('state', new $r->tipo($r->numreserva));
+			$sub->__SET('numReserva', $r->numreserva);			
+			$sub->__SET('residencia', $r->nombre);
+			$sub->__SET('año', $r->año);
+			$sub->__SET('semana', $r->semana);
+			$sub->__SET('fechainicio', $r->fechainicio);		
+			$sub->__SET('precioBase', $r->preciobase);
+			$sub->__SET('estado', $r->estado);
+
+			$resi = new residencia();
+			$resi->__SET('idresidencia', $r->idresidencia);
+			$resi->__SET('nombre', $r->nombre);
+			$resi->__SET('descripcion', $r->descripcion);
+			$resi->__SET('pais', $r->pais);
+			$resi->__SET('ciudad', $r->ciudad);
+			$resi->__SET('direccion', $r->direccion);
+			$resi->__SET('cantpersonas', $r->cantpersonas);
 			$sub->__SET('idResidencia', $resi);	
 			
 			return $sub;
@@ -264,9 +93,19 @@ class reservaModel
 	{
 		try 
 		{
-			$stm = $this->pdo
-			          ->prepare("UPDATE `reserva` SET `estado`= 0 WHERE numreserva = ?");			          
+			$stm = $this->pdo->prepare("UPDATE `reserva` SET `estado`= 0 WHERE numreserva = ?");			          
+			$stm->execute(array($id));
+		} catch (Exception $e) 
+		{
+			die($e->getMessage());
+		}
+	}
 
+	public function publicar($id)
+	{
+		try 
+		{
+			$stm = $this->pdo->prepare("UPDATE `reserva` SET `estado`= 1 WHERE numreserva = ?");			          
 			$stm->execute(array($id));
 		} catch (Exception $e) 
 		{
@@ -305,24 +144,26 @@ class reservaModel
 		try 
 		{
 			$sql = "UPDATE reserva SET 
-						nombre             	= ?,
-						direccion          	= ?,
-						ciudad              = ?,
-						pais	           	= ?, 
-						descripcion        	= ?, 
-						cantpersonas		= ?
-				    WHERE idreserva = ?";
+						idResidencia       	= ?,
+						preciobase          = ?,
+						fechainicio        	= ?, 
+						semana	        	= ?, 
+						año					= ?,
+						estado				= ?,
+						tipo 				= ?
+				    WHERE numreserva = ?";
 
 			$this->pdo->prepare($sql)
 			     ->execute(
 				array(
-					$data->__GET('nombre'),
-					$data->__GET('direccion'),
-					$data->__GET('ciudad'),
-					$data->__GET('pais'),
-					$data->__GET('descripcion'),
-					$data->__GET('cantpersonas'),
-					$data->__GET('idresidencia')
+					$data->__GET('idResidencia')->__GET('idresidencia'),
+					$data->__GET('precioBase'),
+					$data->__GET('fechainicio'),
+					$data->__GET('semana'),
+					$data->__GET('año'),
+					$data->__GET('estado'),
+					$data->__GET('state')->tipo(),
+					$data->__GET('numReserva')
 					)
 				);
 		} catch (Exception $e) 
@@ -392,6 +233,25 @@ class reservaModel
 		}
 	}
 
+	public function hizoReserva($id, $username)
+	{
+		try 
+		{
+			$stm = $this->pdo->prepare("SELECT * FROM reserva r INNER JOIN historialdepujas h ON (r.numreserva=h.idsubasta) 
+										WHERE h.idsubasta = ? AND h.username = ?");
+			$stm->execute(array($id, $username));
+			$r = $stm->fetch(PDO::FETCH_OBJ);
+			if (empty($r)){
+				return false;
+			} else {
+				return true;
+			}
+		} catch (Exception $e) 
+		{
+			die($e->getMessage());
+		}
+	}
+
 	public function sigId()
 	{
 		try 
@@ -404,5 +264,113 @@ class reservaModel
 		{
 			die($e->getMessage());
 		}
+	}
+
+	public function cantidadDePublicaciones($filtro)
+	{
+		try 
+		{
+			$sql = "SELECT COUNT(numreserva) cant FROM reserva s INNER JOIN residencia r ON (s.idresidencia=r.idresidencia) WHERE estado = 1 ";
+			$sql .= $filtro;
+			$stm = $this->pdo->prepare($sql);
+			$stm->execute(array());
+			$r = $stm->fetch(PDO::FETCH_OBJ);
+			return $r->cant;
+		} catch (Exception $e) 
+		{
+			die($e->getMessage());
+		}
+	}
+
+	public function ListarReservasConFiltro($filtro)
+	{
+		try
+		{
+			$result = array();
+			$sql = "SELECT * FROM reserva s INNER JOIN residencia r ON (s.idresidencia=r.idresidencia) WHERE ";
+			$sql .= $filtro;
+			$stm = $this->pdo->prepare($sql);
+			$stm->execute();
+			foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r)
+			{
+				$sub = new reserva();
+				$sub->__SET('state', new $r->tipo($r->numreserva));
+				$sub->__SET('numReserva', $r->numreserva);
+				$sub->__SET('residencia', $r->nombre);
+				$sub->__SET('año', $r->año);
+				$sub->__SET('semana', $r->semana);
+				$sub->__SET('fechainicio', $r->fechainicio);
+				$sub->__SET('precioBase', $r->preciobase);
+				$sub->__SET('estado', $r->estado);
+
+				$resi = new residencia();
+				$resi->__SET('idresidencia', $r->idresidencia);
+				$resi->__SET('nombre', $r->nombre);
+				$resi->__SET('descripcion', $r->descripcion);
+				$resi->__SET('pais', $r->pais);
+				$resi->__SET('ciudad', $r->ciudad);
+				$resi->__SET('direccion', $r->direccion);
+				$resi->__SET('cantpersonas', $r->cantpersonas);
+				$sub->__SET('idResidencia', $resi);		
+
+				$result[] = $sub;
+			}
+			return $result;
+		}
+		catch(Exception $e)
+		{
+			die($e->getMessage());
+		}
+	}
+
+	public function listarReservasUsuario($usu){
+		try
+		{
+			$result = array();
+			$stm = $this->pdo->prepare("SELECT DISTINCT numreserva, tipo, fechainicio, semana, año, estado, res.* 
+										FROM historialdepujas h INNER JOIN reserva r ON (r.numreserva = h.idsubasta) 
+										INNER JOIN residencia res ON (r.idresidencia = res.idresidencia)
+										WHERE h.username = ?");
+			$stm->execute(array($usu));
+			foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r)
+			{
+				$res = new reserva();
+				$res->__SET('state', new $r->tipo($r->numreserva));
+				$res->__SET('numReserva', $r->numreserva);
+				$res->__SET('fechainicio', $r->fechainicio);
+				$res->__SET('año', $r->año);
+				$res->__SET('semana', $r->semana);
+				$res->__SET('estado', $r->estado);	
+
+				$resi = new residencia();
+
+				$resi->__SET('idresidencia', $r->idresidencia);
+				$resi->__SET('nombre', $r->nombre);
+				$resi->__SET('descripcion', $r->descripcion);
+				$resi->__SET('pais', $r->pais);
+				$resi->__SET('ciudad', $r->ciudad);
+				$resi->__SET('direccion', $r->direccion);
+				$resi->__SET('cantpersonas', $r->cantpersonas);
+
+				$res->__SET('idResidencia', $resi);			
+
+				$result[] = $res;
+			}
+			return $result;
+		}
+		catch(Exception $e)
+		{
+			die($e->getMessage());
+		}
+	}
+
+	public function actualizarTipo($res , $tipo){
+		if ($tipo = 0){
+			// estado = 2;
+		}
+		else {
+			// tipo = siguiente;
+		}
+
 	}
 }

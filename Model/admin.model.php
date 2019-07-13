@@ -16,6 +16,32 @@ class adminModel
 		}
 	}
 
+	public function listar()
+	{
+		try 
+		{
+			$result = array();
+			$stm = $this->pdo->prepare("SELECT * FROM `administrador`");
+			$stm->execute(array());
+			foreach($stm->fetchAll(PDO::FETCH_OBJ) as $r)
+			{
+				$adm = new admin();
+
+				$adm->__SET('username', $r->username);
+				$adm->__SET('nombre', $r->nombre);
+				$adm->__SET('apellido', $r->apellido);
+				$adm->__SET('contraseña', $r->contraseña);
+				$adm->__SET('email', $r->mail);
+
+				$result[] = $adm;
+			}
+			return $result;
+		} catch (Exception $e) 
+		{
+			die($e->getMessage());
+		}
+	}
+
 	public function ObtenerAdmin($id)
 	{
 		try 
@@ -46,7 +72,7 @@ class adminModel
 		try 
 		{
 			$stm = $this->pdo
-			          ->prepare("DELETE FROM usuarios WHERE username = ?");			          
+			          ->prepare("DELETE FROM administrador WHERE username = ?");			          
 
 			$stm->execute(array($id));
 		} catch (Exception $e) 
@@ -55,31 +81,27 @@ class adminModel
 		}
 	}
 
-	public function Actualizar(usuario $data)
+	public function Actualizar(admin $data, $admViejo)
 	{
 		try 
 		{
-			$sql = "UPDATE usuarios SET 
+			$sql = "UPDATE administrador SET 
 						nombre             	= ?,
 						apellido           	= ?,
-						contra              = ?,
-						idciudad           	= ?, 
-						direccion          	= ?, 
-						email     			= ?, 
-						ntel	     		= ?
-				    WHERE dni = ?";
+						contraseña          = ?, 
+						mail     			= ?, 
+						username     		= ?
+				    WHERE username = ?";
 
 			$this->pdo->prepare($sql)
 			     ->execute(
 				array(
 					$data->__GET('nombre'),
 					$data->__GET('apellido'),
-					$data->__GET('contra'),
-					$data->__GET('idciudad'),
-					$data->__GET('direccion'),
+					$data->__GET('contraseña'),
 					$data->__GET('email'),
-					$data->__GET('ntel'),
-					$data->__GET('dni')
+					$data->__GET('username'),
+					$admViejo
 					)
 				);
 		} catch (Exception $e) 
@@ -88,23 +110,20 @@ class adminModel
 		}
 	}
 	
-	public function Registrar(usuario $data)
+	public function Registrar(admin $data)
 	{
 		try 
 		{
-		$sql = "INSERT INTO usuarios (`dni`, `nombre`, `apellido`, `idciudad`, `direccion`, `email`, `ntel`, `contra`) 
-		        VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		$sql = "INSERT INTO administrador (`nombre`, `apellido`, `username`, `mail`, `contraseña`) 
+		        VALUES (?, ?, ?, ?, ?)";
 		$this->pdo->prepare($sql)
 		     ->execute(
 			array(
-				$data->__GET('dni'),
 				$data->__GET('nombre'),
 				$data->__GET('apellido'),
-				$data->__GET('idciudad'),
-				$data->__GET('direccion'),
+				$data->__GET('username'),
 				$data->__GET('email'),
-				$data->__GET('ntel'),
-				$data->__GET('contra'),
+				$data->__GET('contraseña'),
 				)
 			);
 		} catch (Exception $e) 
@@ -116,10 +135,10 @@ class adminModel
 	public function existe($id){
 		try 
 		{
-			$stm = $this->pdo->prepare("SELECT * FROM usuarios WHERE dni = ?");
+			$stm = $this->pdo->prepare("SELECT * FROM administrador WHERE username = ?");
 			$stm->execute(array($id));
 			$r = $stm->fetch(PDO::FETCH_OBJ);
-			if (mysqli_num_rows($r)==1){
+			if (!empty($r)){
 				return true;
 			} else {
 				return false;

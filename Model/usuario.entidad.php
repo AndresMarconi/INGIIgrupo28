@@ -35,8 +35,6 @@ class usuario
 		$this->__SET('codSeg', $datos[9]);
 	}
 
-
-
 //session	
 	public function acceso($contra){
 		if (($this->__GET('contra') == $contra)){
@@ -47,6 +45,7 @@ class usuario
 	}
 
 	public function login(){
+		$_SESSION['dia'] = date("Y-m-d");
 		echo "<script languaje= 'javascript'>";
 		echo "window.location='usuario/index.php';";
 		echo "</script>";
@@ -61,7 +60,6 @@ class usuario
 		echo "</script>";
 		exit;
 	}
-
 
 	public function listarReservasResidencia($home, $idresi){
 		return $home->reservasDeResidenciaBasico($idresi);
@@ -79,6 +77,4 @@ class usuario
 			return true;
 		}
 	}
-
-
 }

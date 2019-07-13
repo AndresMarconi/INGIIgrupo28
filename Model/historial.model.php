@@ -38,8 +38,7 @@ class HistorialPujasModel
 	{
 		try 
 		{
-			$stm = $this->pdo
-			          ->prepare("SELECT username FROM historialdepujas WHERE idsubasta = ? AND montopuja = ?");
+			$stm = $this->pdo->prepare("SELECT username FROM historialdepujas WHERE idsubasta = ? AND montopuja = ?");
 			     
 			$stm->execute(array($id, $max));
 			$r = $stm->fetch(PDO::FETCH_OBJ);
@@ -73,4 +72,18 @@ class HistorialPujasModel
 		}
 	}
 
+
+	public function eliminarPuja($id, $user)
+	{
+		try 
+		{
+			$stm = $this->pdo
+			          ->prepare("DELETE FROM historialdepujas WHERE idsubasta = ? AND username = ?");			          
+
+			$stm->execute(array($id, $user));
+		} catch (Exception $e) 
+		{
+			die($e->getMessage());
+		}
+	}
 }

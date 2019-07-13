@@ -1,7 +1,6 @@
 <?php
 class admin
 {
-	private $dni;
 	private $username;
 	private $nombre;
 	private $apellido;
@@ -44,6 +43,14 @@ class admin
 		echo "window.location='../index.php';";
 		echo "</script>";
 		exit;
+	}
+
+	public function soyyo($nom){
+		$bol = false;
+		if ($this->__GET('username') == $nom) {
+			$bol = true;
+		}
+		return $bol;
 	}
 
 //Otros
@@ -89,20 +96,38 @@ class admin
 
 	//Subasta
 	public function listarSubastas(){
-		return $this->reservas->listar('subasta');
+		$filtro = " tipo = 'subasta' AND estado='1'";
+		return $this->reservas->ListarReservasConFiltro($filtro);
+	}
+
+
+	public function listarSubastasEnEspera(){
+		$filtro = " tipo = 'subasta' AND estado='2'";
+		return $this->reservas->ListarReservasConFiltro($filtro);
 	}
 
 	public function listarDirectas(){
-		return $this->reservas->listar('directa');
+		$filtro = " tipo = 'directa' AND estado='1'";
+		return $this->reservas->ListarReservasConFiltro($filtro);
+	}
+
+	public function listarHotSale(){
+		$filtro = " tipo = 'HotSale' AND estado='1'";
+		return $this->reservas->ListarReservasConFiltro($filtro);
+	}
+
+	public function listarForHotSale(){
+		$filtro = " tipo = 'StateReserva' AND estado = 1";
+		return $this->reservas->ListarReservasConFiltro($filtro);
 	}
 
 	public function listarXresidencia($idres){
-		return $this->reservas->listarXresidencia($idres);
+		$filtro = "(r.idresidencia = ".$idres.") ORDER BY año, semana"; //AND((año > ".date('Y').") OR ((semana >= ".date('w').")AND(año = ".date('Y').")))";
+		return $this->reservas->ListarReservasConFiltro($filtro);
 	}
 
-	public function obtenerSubasta($idreserva){
-		$resi = $this->residencias->Obtener($idresi);
-		return $resi;
+	public function obtenerReserva($idreserva){
+		return $this->reservas->ObtenerRes($idreserva);
 	}
 
 	public function agregarSubasta($sub){
@@ -123,6 +148,12 @@ class admin
 		echo "window.location='index.php';";
 		echo "</script>";
 		return $dir;
+	}
+
+	public function publicarHotSale($numReserva, $precio){
+		$res = $this->reservas->ObtenerRes($numReserva);
+		$res->ponerEnHotsale($precio, date('Y-m-d'));
+		$this->reservas->Actualizar($res);
 	}
 
 	public function cerrarSubasta($idreserva){

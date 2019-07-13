@@ -90,9 +90,7 @@ class usuarioModel
 	{
 		try 
 		{
-			$stm = $this->pdo
-			          ->prepare("DELETE FROM usuarios WHERE username = ?");			          
-
+			$stm = $this->pdo->prepare("DELETE FROM usuarios WHERE username = ?");			          
 			$stm->execute(array($id));
 		} catch (Exception $e) 
 		{
@@ -217,4 +215,16 @@ class usuarioModel
 			die($e->getMessage());
 		}
 	}
+
+	public function sumarToken($tok, $user){
+		try {
+			$sql = "UPDATE usuario SET cantReservas = ? WHERE username = ?";
+			$this->pdo->prepare($sql)
+			     ->execute(array($tok+1, $user));
+		} catch (Exception $e) 
+		{
+			die($e->getMessage());
+		}
+	}
 }
+?>

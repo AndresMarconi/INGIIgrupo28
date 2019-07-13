@@ -18,11 +18,20 @@ class HomeSwitch
 
 	public function __GET($k){ return $this->$k; }
 	public function __SET($k, $v){ return $this->$k = $v; }
+
+	public function checkday() {
+		foreach ($this->listarReservasAbiertas() as $res):
+			if($res->finDePublicacion() || $res->cambioDeEstado()){ // Devolver true-false y cambiar estado interno de $res
+				$this->reservas->Actualizar($res);
+			}
+		endforeach;
+	}
 	
-	public function obtenerUsu($idu){
-		$usu = $this->usuarios->Obtener($idu);
-		if(($usu->__GET('dni') != " ")){
-			return $usu;
+//ADMINS
+	public function obtenerAdmin($idu){
+		$adm = $this->admins->ObtenerAdmin($idu);
+		if(($adm->__GET('username') != " ")){
+			return $adm;
 		} else {
 			echo "<script languaje= 'javascript'>";
 			echo "window.location='login.php';";
@@ -31,10 +40,44 @@ class HomeSwitch
 		}
 	}
 
-	public function obtenerAdmin($idu){
-		$adm = $this->admins->ObtenerAdmin($idu);
-		if(($adm->__GET('dni') != " ")){
-			return $adm;
+	public function agregarAdmin($adm){
+		$this->admins->Registrar($adm);
+	}
+
+	public function listarAdmins(){
+		return $this->admins->listar();
+	}
+
+	public function existeAdmin($adm){
+		return $this->admins->existe($adm);
+	}
+
+	public function modificarAdmin($adm , $admViejo){
+		return $this->admins->Actualizar($adm , $admViejo);
+	}
+
+	public function EliminarAdmin($adm){
+		return $this->admins->Eliminar($adm);
+	}	
+
+	public function actualizarPrecios($basico, $premiun){
+		$this->admins->cambiarPrecios($basico, $premiun);
+	}
+
+	public function obtenerPrecioBasico(){
+		return $this->admins->precioBasico();
+	}
+
+	public function obtenerPrecioPremium(){
+		return $this->admins->precioPremium();
+	}
+//FIN ADMINS
+
+//USUARIOS
+	public function obtenerUsu($idu){
+		$usu = $this->usuarios->Obtener($idu);
+		if(($usu->__GET('dni') != " ")){
+			return $usu;
 		} else {
 			echo "<script languaje= 'javascript'>";
 			echo "window.location='login.php';";
@@ -50,42 +93,6 @@ class HomeSwitch
 		echo "</script>";
 	}
 
-	public function actualizarPrecios($basico, $premiun){
-		$this->admins->cambiarPrecios($basico, $premiun);
-	}
-
-	public function obtenerPrecioBasico(){
-		return $this->admins->precioBasico();
-	}
-
-	public function obtenerPrecioPremium(){
-		return $this->admins->precioPremium();
-	}
-
-	public function listarSubastas(){
-		return $this->reservas->listar('subasta');
-	}
-
-	public function listarReservasAbiertas(){
-		return $this->reservas->listarReservasAbiertas();
-	}
-
-	public function listarSubastasAbiertas(){
-		return $this->reservas->listarAbiertas('subasta');
-	}
-
-	public function obtenerSubasta($id){
-		return $this->reservas->obtener($id, 'subasta');
-	}
-
-		public function obtenerDirecta($id){
-		return $this->reservas->obtener($id, 'directa');
-	}
-
-	public function tieneReservas($id){
-		return $this->reservas->tieneReservas($id);
-	}
-
 	public function listaUsuarios(){
 		return $this->usuarios->listar();
 	}
@@ -97,7 +104,9 @@ class HomeSwitch
 	public function modificarUsuario($usu , $usuViejo){
 		return $this->usuarios->Actualizar($usu , $usuViejo);
 	}
+//FIN USUARIOS
 
+//RESIDENCIAS
 	public function obtenerResidencia($idresi){
 		$resi = $this->residencias->Obtener($idresi);
 		return $resi;
@@ -105,6 +114,9 @@ class HomeSwitch
 	public function listarResidencias(){
 		return $this->residencias->listar();
 	}
+//FIN DE RESIDENCIAS
+
+//SOLICITUDES
 	public function solicitoPremium($usu){
 		$this->solicitudes->registrarSolicitud($usu);
 	}
@@ -127,19 +139,85 @@ class HomeSwitch
 	public function consultarEstadoSolicitud($usu){
 		return $this->solicitudes->consultar($usu);
 	}
-	public function reservasDeResidenciaBasico($idresi){
-		return $this->reservas->listarSubastasResidencia($idresi);
-	}
-	public function reservasDeResidenciaBasicoAbiertas($idresi){
-		return $this->reservas->listarResidenciaAbiertas($idresi);
+//FIN SOLICITUDES
+
+//RESERVAS
+	public function obtenerSubasta($id){
+		return $this->reservas->obtener($id, 'subasta');
 	}
 
-	public function reservasDeResidenciaPremiunAbiertas($idresi){
-		return $this->reservas->listarResidenciaAbiertas($idresi);
+	public function obtenerDirecta($id){
+		return $this->reservas->obtener($id, 'directa');
 	}
-	public function reservarDirecta($dir, $usu){
-		$dir->reservar($usu);
+
+	public function obtenerReserva($idreserva){
+		return $this->reservas->ObtenerRes($idreserva);
+	}
+
+	public function tieneReservas($id){
+		return $this->reservas->tieneReservas($id);
+	}
+
+	public function cantidadDePaginas($filtro){
+		$aux=$this->reservas->cantidadDePublicaciones($filtro);
+		return $aux/5;
+	}
+
+	public function laHizo($id, $usu){
+		return $this->reservas->hizoReserva($id, $usu->__GET('username'));
+	}
+
+	public function reservar($dir, $usu, $monto){
+		$dir->reservar($usu, $monto);
 		$this->reservas->cerrar($dir->__GET('numReserva'));
 		$this->usuarios->restarToken($usu->__GET('tokens') , $usu->__GET('username'));
 	}
+
+	public function cancelarReserva($dir,$usu){
+		$dir->cancelarReserva($usu);
+		$this->reservas->Actualizar($dir);
+		$this->usuarios->sumarToken($usu->__GET('tokens') , $usu->__GET('username'));
+	}
+
+//LISTAR RESERVAS CON FILTRO
+	public function listarSubastas(){
+		$filtro = " tipo = 'subasta'";
+		return $this->reservas->ListarReservasConFiltro($filtro);
+	}
+
+	public function listarReservasAbiertas(){
+		$filtro = " estado = 1 ";
+		return $this->reservas->ListarReservasConFiltro($filtro);
+	}
+
+	public function listarReservasDeUsuario($usu){
+		return $this->reservas->listarReservasUsuario($usu->__GET('username'));
+	}
+
+	public function listarSubastasAbiertas(){
+		$filtro = " estado = 1 AND tipo = 'subasta'";
+		return $this->reservas->ListarReservasConFiltro($filtro);
+	}
+
+	public function listarReservasAbiertasFiltro($filtro){
+		$filtro = " estado = 1 AND tipo != 'StateReserva' ".$filtro;
+		return $this->reservas->ListarReservasConFiltro($filtro);
+	}
+
+	public function reservasDeResidenciaBasico($idresi){
+		$filtro = "(tipo != 'directa') AND (idresidencia = ".$idres.")AND((año > ".date('Y').") OR ((semana >= ".date('w').")AND(año = ".date('Y').")))";
+		return $this->reservas->ListarReservasConFiltro($filtro);
+	}
+
+	public function reservasDeResidenciaBasicoAbiertas($idresi){
+		$filtro = "(estado = 1) AND (r.idresidencia = ".$idresi.")AND((año > ".date('Y').") OR ((semana >= ".date('w').")AND(año = ".date('Y').")))";
+		return $this->reservas->ListarReservasConFiltro($filtro);
+	}
+
+	public function reservasDeResidenciaPremiunAbiertas($idresi){
+		$filtro = "(estado = 1) AND (r.idresidencia = ".$idresi.")AND((año > ".date('Y').") OR ((semana >= ".date('w').")AND(año = ".date('Y').")))";
+		return $this->reservas->ListarReservasConFiltro($filtro);
+	}
+//FIN DE LISTAR RESERVAS CON FILTRO
+//FIN RESERVAS
 }
