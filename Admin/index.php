@@ -34,22 +34,10 @@
 		}
 	}
 
-	if (isset($_REQUEST['cerrarSub'])) {
-		$adm->cerrarSubasta($_REQUEST['cerrarSub']);
+	if (isset($_REQUEST['ponerHot'])) {
+		$adm->publicarHotSale($_REQUEST['ponerHot'], $_POST['precioHot'.$_REQUEST['ponerHot']]);
 		echo "<script languaje= 'javascript'>";
-		if ( $_REQUEST['gan'] == 0) {
-			echo "alert ('Se cerro la subasta, sin un ganador');";
-		} else {
-			echo "alert ('Se cerro la subasta, El ganador es ".$_POST['email'.$_REQUEST['gan']]."');";
-		}
-		echo "window.location='index.php';";
-		echo "</script>";
-	}
-
-	if (isset($_REQUEST['cerrardir'])) {
-		$adm->abrirSubasta($_REQUEST['cerrardir']);
-		echo "<script languaje= 'javascript'>";
-		echo "alert ('Se abrio la subasta de la reserva');";
+		echo "alert ('Hot Sale Publicado');";
 		echo "window.location='index.php';";
 		echo "</script>";
 	}

@@ -6,6 +6,7 @@
 	require_once '../Model/usuario.model.php';
 	require_once '../Model/admin.entidad.php';
 	require_once '../Model/admin.model.php';
+	require_once '../Model/state.entidad.php';
 	require_once '../Model/residencia.entidad.php';
 	require_once '../Model/residencia.model.php';
 	//require_once '../Model/basico.model.php';
@@ -23,4 +24,5 @@
 	//require_once '../Model/hotsale.model.php';
 	require_once'../Model/solicitudes.model.php';
 	require_once'../Model/solicitud.entidad.php';
+
 ?>

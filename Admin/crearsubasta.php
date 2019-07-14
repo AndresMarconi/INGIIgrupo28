@@ -32,7 +32,7 @@
 			if (($interval->format('%a'))>180) {
 				if (isset($_POST['residencia'])) {
 					if (!$adm->existeReserva($_POST['residencia'], $semana, $año)) {
-						$sub = new directa();
+						$sub = new reserva();
 						$sub->__SET('idResidencia', $_POST['residencia']);
 						$sub->__SET('año', $año);
 						$sub->__SET('semana', $semana);

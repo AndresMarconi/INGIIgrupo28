@@ -8,6 +8,7 @@
 	require_once '../Model/admin.model.php';
 	require_once '../Model/residencia.entidad.php';
 	require_once '../Model/residencia.model.php';
+	require_once '../Model/state.entidad.php';
 	//require_once '../Model/basico.model.php';
 	require_once '../Model/basico.entidad.php';
 	require_once '../Model/premiun.entidad.php';

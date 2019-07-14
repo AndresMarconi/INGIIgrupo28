@@ -18,7 +18,9 @@
 		 		if ($_POST['tipo'] == 'usuario') {
 		 			$usu = $home->obtenerUsu($_POST['nombre_usuario']);
 		 			if($usu->acceso($_POST['password'])){
-						$_SESSION['usu']=$_POST["nombre_usuario"];
+						$_SESSION['usu']= $_POST["nombre_usuario"];
+						$_SESSION['dia']= date('Y-m-d');
+						$home->checkday();
 						$usu->login();
 					} else {
 						echo "<script languaje= 'javascript'>";
@@ -30,6 +32,8 @@
 		 			$usu = $home->obtenerAdmin($_POST['nombre_usuario']);
 		 			if($usu->acceso($_POST['password'])){
 						$_SESSION['usu']=$_POST["nombre_usuario"];
+						$_SESSION['dia']= date('Y-m-d');
+						$home->checkday();
 						$usu->login();
 					} else {
 						echo "<script languaje= 'javascript'>";

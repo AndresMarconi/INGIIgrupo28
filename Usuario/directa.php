@@ -9,7 +9,10 @@
 		echo "</script>";
 	}
 	$usu = $home->obtenerUsu($_SESSION['usu']);
-	$dir = $home->obtenerDirecta($_REQUEST['dir']);
+	if (isset($_REQUEST['cerrar'])){
+		$usu->cerrarSesion();
+	}
+	$dir = $home->obtenerReserva($_REQUEST['dir']);
 	$resi = $dir->__GET('idResidencia');
 	$navbar = "navbar".$usu->tipo().".html";
 	echo '<!DOCTYPE html>'."\n";
@@ -24,22 +27,50 @@
 
 	if(isset($_POST['reservar'])){
 		if($usu->tieneTokensSuficientes()){
-			$home->reservarDirecta($dir,$usu);
+			$monto = $_POST['monto'];
+			$home->reservar($dir,$usu,$monto);
 			echo "<script languaje= 'javascript'>";
 			echo "alert ('Su reserva se realizo con exito');";
-			echo "window.location='listadoResidencias.php';";
+			echo "window.location='verreservas.php';";
 			echo "</script>";
-		}
-		else{
+		} else{
 		echo "<script languaje= 'javascript'>";
 		echo "alert ('Ya agoto sus reservas');";
 		echo "</script>";
 		}
 	}
 
-	if (isset($_REQUEST['cerrar'])){
-		$usu->cerrarSesion();
+	if (isset($_POST['pujar'])) {
+	$dir = $home->obtenerSubasta($_REQUEST['dir']);
+	if ($_POST['monto'] > $dir->pujaMaxima()) {
+		$dir->pujar($_POST['monto'], $usu->__GET('username'));
+		echo "<script languaje= 'javascript'>";
+		echo "alert('La puja se realizo correctamente');";
+		echo "window.location='directa.php?dir=".$dir->__GET('numReserva')."';";
+		echo "</script>";
+	} else {
+		echo "<script languaje= 'javascript'>";
+		echo "alert('La puja debe ser mayor a la puja mayor');";
+		echo "window.location='directa.php?dir=".$dir->__GET('numReserva')."';";
+		echo "</script>";
+		}	
 	}
+
+	if(isset($_POST['cancelar'])){
+		$home->cancelarReserva($dir, $usu);
+		echo "<script languaje= 'javascript'>";
+		echo "alert ('La reserva se cancelo con exito');";
+		echo "window.location='verreservas.php';";
+		echo "</script>";
+	}
+
+	if(isset($_POST['rechazar'])){
+		$dir->cancelarSubasta($usu);
+		echo "<script languaje= 'javascript'>";
+		echo "alert ('La reserva se cancelo con exito');";
+		echo "window.location='verreservas.php';";
+		echo "</script>";
+	}	
 
 	if (isset($_REQUEST['solicito'])){
 		$home->solicitoPremium($usu->__GET('username'));

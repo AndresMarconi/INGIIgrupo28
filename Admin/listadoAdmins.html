@@ -1,0 +1,55 @@
+            <div class="container-fluid">
+                <a class="btn btn-link esconder" role="button" href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars"></i></a>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div>
+                            <h1 class="panelAdm">LISTADO DE SOLICITUDES </h1>
+                            <h1>Solicitudes</h1>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Usuario</th>
+                                            <th>Nombre</th>
+                                            <th>Apellido</th>
+                                            <th>E-Mail</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php foreach($home->listarAdmins() as $r): ?>
+                                        <tr>
+                                            <td><?php echo $r->__GET('username')?></td>
+                                            <td><?php echo $r->__GET('nombre')?></td>
+                                            <td><?php echo $r->__GET('apellido')?></td>
+                                            <td><?php echo $r->__GET('email')?></td>
+                                            <td>
+                                            <?php if ($adm->soyyo($r->__GET('username'))) {  ?>      
+                                                <a class="btn btn-primary action-button" role="button" 
+                                                href="regadmin.php?user=<?php echo $adm->__GET('username')?>">MODIFICAR MIS DATOS</a>
+                                            <?php } else { ?>
+                                                <form method="post" action="?eliminar=<?php echo $r->__GET('username')?>">
+                                                    <button class="btn btn-danger">ELIMINAR</button>
+                                                </form>
+                                            <?php } ?>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach;?>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <a class="btn btn-success action-button" role="button" href="regadmin.php">
+                                                    AGREGAR ADMINISTRADOR
+                                                </a>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>

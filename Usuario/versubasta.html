@@ -1,6 +1,35 @@
-    <div class="container" style="min-height: 500px !important">
-       <?php foreach($home->listarReservasAbiertas() as $r): ?> 
-        <div class="row" style="margin: 20px">
+    <div class="container-fluid border rounded-0" style="margin-top: 10px;margin-bottom: 10px;padding-top: 10px;padding-bottom: 10px;">
+        <div class="row">
+            <div class="col">
+                <form method="post" class="form-inline d-flex justify-content-around">
+                    <select class="border rounded-0 border-dark form-control" name="tipo">
+                        <optgroup label="Tipo de reserva">
+                            <option value="directa" selected="" disabled="">Elija forma de reserva</option>
+                            <option value="directa">Directa</option>
+                            <option value="subasta">Subasta</option>
+                            <option value="hotsale">Hot Sale</option>
+                        </optgroup>
+                    </select>
+                    <input class="border rounded-0 border-dark form-control" name="semana" type="week" 
+                    <?php if(!empty($_POST['semana'])) {echo "value='".$_POST['semana']."'" ;} ?>>
+                    <input class="border rounded-0 border-dark form-control" name="habi" type="number" min="1" placeholder="cantidad de Habitaciones"
+                    <?php if(!empty($_POST['habi'])) {echo "value='".$_POST['habi']."'" ;} ?>>
+                    <input class="border rounded-0 border-dark form-control" name="pais" type="text" placeholder="pais destino"
+                    <?php if(!empty($_POST['pais'])) {echo "value='".$_POST['pais']."'" ;} ?>>
+                    <input class="border rounded-0 border-dark form-control" name="ciudad" type="text" placeholder="ciudad destino" <?php if(!empty($_POST['ciudad'])) {echo "value='".$_POST['ciudad']."'" ;} ?>>
+                    <button type="submit" class="btn btn-primary" name="buscar">BUSCAR</button>
+                    <button type="submit" class="btn btn-danger" name="limpiar">LIMPIAR</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container" style="min-height: 500px !important; margin-top: 50px">
+        <?php 
+            $reservas = $home->listarReservasAbiertasFiltro($filtro);
+            if (!empty($reservas)){
+            foreach($reservas as $r):
+        ?> 
+        <div class="row border rounded-0 border-dark shadow-sm" style="margin: 10px; padding: 10px;">
             <div class="col">
                 <div class="carousel slide" data-ride="carousel" id="carousel-<?php echo $r->__GET('idResidencia')->__GET('idresidencia')?>">
                     <div class="carousel-inner" role="listbox">
@@ -26,19 +55,72 @@
             <div class="col">
                 <h1><a href="verresidencia.php?idres=<?php echo $r->__GET('idResidencia')->__GET('idresidencia')?>"><?php echo $r->__GET('idResidencia')->__GET('nombre')?></a></h1>
                 <p><?php echo $r->__GET('idResidencia')->__GET('descripcion')?></p>
-                <p> Semana: <?php echo $r->__GET('semana')?></p>
-                <p> Año: <?php echo $r->__GET('año')?></p>
+                <p><?php echo $r->__GET('idResidencia')->__GET('pais')?></p>
+                <p><?php echo $r->__GET('idResidencia')->__GET('ciudad')?></p>
                 <p> Habitaciones: <?php echo $r->__GET('idResidencia')->__GET('cantpersonas')?></p>
             </div>
-            <div class="col d-flex flex-column align-items-center">
+            <div class="col d-flex flex-column align-items-center justify-content-center">
+                <p> Semana: <?php echo $r->__GET('semana')?></p>
+                <p> Año: <?php echo $r->__GET('año')?></p>
                 <?php echo $r->boton($usu)?>
             </div>
         </div>
         <br><br>
-        <?php endforeach;?>
+        <?php endforeach;
+        } else{
+            echo "<h1>NO HAY RESERVAS DISPONIBLES</h1>";
+        }
+        ?>
+        <nav class="pagination justify-content-center flex-grow-0" aria-label="Page navigation example" style="max-height: 30px; margin-bottom: 20px">
+            <ul class="pagination justify-content-center flex-grow-0" style="max-height: 30px; margin-bottom: 20px">
+                <?php
+                    if($pag == 1){
+                        echo "  <li class='page-item disabled'>
+                                    <form method='post' action='?pa=".($pag - 1)."'>
+                                        <button class='page-link' type='submit'aria-disabled='true'>Anterior</button>
+                                    </form>
+                                </li> ";
+                    }else{
+                        echo "  <li class='page-item'>
+                                    <form method='post' action='?pa=".($pag - 1)."'>
+                                        <button class='page-link' type='submit'>Anterior</button>
+                                    </form>
+                                </li> ";
+                    }
 
+                    for ($i=1; $i <= $pags; $i++) { 
+                        if($pag == $i){
+                            echo "  <li class='page-item active' aria-current='page'>
+                                        <form method='post' action='?pa=".$i."'>
+                                            <button class='page-link' type='submit'>".$i."</button>
+                                        </form>
+                                    </li>";
+                        } else {
+                            echo "  <li class='page-item'>
+                                        <form method='post' action='?pa=".$i."'>
+                                            <button class='page-link' type='submit'>".$i."</button>
+                                        </form>
+                                    </li>";
+                        }
+                    }
+
+                    if($pag == $pags){
+                        echo "  <li class='page-item disabled'>
+                                    <form method='post' action='?pa=".($pag + 1)."'>
+                                        <button class='page-link' type='submit'aria-disabled='true'>Siguinte</button>
+                                    </form>                                
+                                </li> ";
+                    }else{
+                        echo "  <li class='page-item'>
+                                    <form method='post' action='?pa=".($pag + 1)."'>
+                                        <button class='page-link' type='submit'>Siguiente</button>
+                                    </form>
+                                </li> ";
+                    }
+                ?>
+            </ul>
+        </nav>
     </div>
-
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -58,8 +140,8 @@
                 <form method="post" action="?solicito=1">
                 <button type="submit" class="btn btn-primary">Solicite su plan premium</button>
                 <?php } else {
-                echo "<p>Solicitud pendiente</p>";
-            }?>
+                    echo "<p>Solicitud pendiente</p>";
+                }?>
 
               </div>
             </div>

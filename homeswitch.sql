@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-06-2019 a las 17:44:08
+-- Tiempo de generación: 10-07-2019 a las 01:58:05
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 5.6.20
 
@@ -58,17 +58,17 @@ CREATE TABLE `historialdepujas` (
 --
 
 INSERT INTO `historialdepujas` (`username`, `idsubasta`, `montopuja`) VALUES
-('1', 3, 400.00),
-('1', 4, 550.00),
-('1', 3, 550.00),
-('1', 3, 700.00),
-('1', 4, 800.00),
 ('macarena.sanchez', 8, 200.00),
 ('macarena.sanchez', 10, 200.00),
-('macarena.sanchez', 12, 300.30),
-('otroUser2', 10, 210.00),
 ('otroUser123', 13, 200.00),
-('guille', 9, 1.00);
+('guille', 16, 1.00),
+('macarena.sanchez', 15, 2302.15),
+('macarena.sanchez', 15, 2302.20),
+('macarena.sanchez', 15, 2302.25),
+('macarena.sanchez', 15, 2302.30),
+('macarena.sanchez', 15, 2302.50),
+('macarena.sanchez', 9, 400.00),
+('otroUser2', 12, 350.00);
 
 -- --------------------------------------------------------
 
@@ -129,7 +129,7 @@ INSERT INTO `precios` (`id`, `basico`, `premiun`) VALUES
 
 CREATE TABLE `reserva` (
   `numreserva` int(11) NOT NULL,
-  `tipo` varchar(11) NOT NULL,
+  `tipo` varchar(15) NOT NULL,
   `idresidencia` int(11) NOT NULL,
   `preciobase` float(7,2) NOT NULL,
   `fechainicio` date NOT NULL,
@@ -143,14 +143,15 @@ CREATE TABLE `reserva` (
 --
 
 INSERT INTO `reserva` (`numreserva`, `tipo`, `idresidencia`, `preciobase`, `fechainicio`, `semana`, `año`, `estado`) VALUES
-(9, 'directa', 2, 0.11, '0000-00-00', 22, 2019, 0),
-(10, 'subasta', 2, 99.00, '0000-00-00', 25, 2019, 0),
-(11, 'hotsale', 2, 0.11, '0000-00-00', 27, 2019, 1),
-(12, 'subasta', 3, 200.00, '0000-00-00', 27, 2019, 1),
-(13, 'subasta', 9, 100.00, '0000-00-00', 25, 2019, 1),
-(14, 'directa', 1, 333.33, '2019-06-06', 33, 2019, 1),
+(9, 'HotSale', 2, 400.00, '2019-07-08', 45, 2019, 0),
+(10, 'subasta', 2, 99.00, '2019-06-04', 25, 2019, 0),
+(11, 'StateReserva', 2, 100.00, '2019-06-07', 27, 2019, 0),
+(12, 'subasta', 3, 200.00, '2019-01-02', 50, 2019, 0),
+(13, 'subasta', 9, 100.00, '2019-06-14', 25, 2019, 0),
+(14, 'StateReserva', 1, 333.00, '2019-01-01', 33, 2019, 1),
 (15, 'subasta', 2, 99.00, '2019-06-16', 29, 2019, 1),
-(16, 'directa', 4, 700.00, '2019-06-18', 50, 2021, 1);
+(16, 'directa', 4, 700.00, '2019-06-18', 50, 2021, 0),
+(17, 'subasta', 2, 300.50, '2019-07-09', 9, 2020, 1);
 
 -- --------------------------------------------------------
 
@@ -211,11 +212,11 @@ CREATE TABLE `usuario` (
 
 INSERT INTO `usuario` (`dni`, `tipo`, `username`, `contraseña`, `cantReservas`, `nombre`, `apellido`, `mail`, `telefono`, `direccion`, `inicioContrato`, `finContrato`, `numTarjeta`, `vencimientoTarjeta`, `codSegTarjeta`) VALUES
 (28875123, 'premiun', '', 'contraseña', 2, 'tomas', 'orejuela', 'unmail@gmail.com', '2147483647', 'calle 8 223', '0000-00-00', '0000-00-00', '2147483647', '0000-00-00', 123),
-(39487145, 'premiun', 'guille', 'guille', 1, 'Guille', 'Guillen', 'mail@gmail.com', '2147483647', 'Direccion', '0000-00-00', '0000-00-00', '1212131314141515', '2019-07-01', 221),
-(390891113, 'basico', 'macarena.sanchez', 'contraseña', 2, 'macarena1', 'sanchez1', 'unmail@gmail.com1', '2147483647', 'calle 13 29981', '0000-00-00', '0000-00-00', '2147483647', '0000-00-00', 351),
-(42888999, 'basico', 'otroUser', 'user', 2, 'unnombreNuevo2', 'sanchez', 'unaDir@gmail.com', '2147483647', 'unaDir', '0000-00-00', '0000-00-00', '2147483647', '0000-00-00', 123),
+(39487145, 'premiun', 'guille', 'guille', 1, 'Guille', 'Guille', 'mail@gmail.com', '2147483647', 'Direccion', '0000-00-00', '0000-00-00', '1212131314141515', '2019-07-01', 221),
+(39089111, 'basico', 'macarena.sanchez', 'contraseña', 0, 'macarena1', 'sanchez1', 'unmail@gmail.com1', '2147483647', 'calle 13 29981', '0000-00-00', '0000-00-00', '2147483647', '0000-00-00', 351),
+(47288899, 'basico', 'otroUser', 'user', 2, 'unnombreNuevo2', 'sanchez', 'unaDir@gmail.com', '2147483647', 'unaDir', '0000-00-00', '0000-00-00', '2147483647', '0000-00-00', 123),
 (41999348, 'basico', 'otroUser123', '12345', 2, 'mario', 'Guillen', 'unmail@gmail.com', '2147483647', 'calle 8 223', '0000-00-00', '0000-00-00', '1212111113131411', '2020-02-01', 129),
-(28875123, 'basico', 'otroUser2', 'contraseña', 2, 'unNombre', 'sanchez', 'unmail@gmail.com', '2147483647', 'calle 8 223', '0000-00-00', '0000-00-00', '2147483647', '0000-00-00', 123),
+(28875123, 'basico', 'otroUser2', 'contraseña', 0, 'unNombre', 'sanchez', 'unmail@gmail.com', '2147483647', 'calle 8 223', '0000-00-00', '0000-00-00', '2147483647', '0000-00-00', 123),
 (28875123, 'basico', 'user', 'user', 2, 'unNombre', 'roldan', 'unmail@gmail.com', '2344409478', 'unaDirNueva1', '0000-00-00', '0000-00-00', '1212121213131414', '2019-07-01', 112);
 
 --

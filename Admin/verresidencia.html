@@ -1,6 +1,6 @@
     <div id="promo" style="background-color: #ffffff;background-image: url(assets/img/star-sky.jpg&quot;);">
        <div class="row register-form">
-            <div class="col-md-8 offset-md-2">
+            <div class="col-md-10 offset-md-1">
                 <form class="custom-form" method="post" enctype="multipart/form-data">
                     <h1><?php echo $resi->__GET('nombre')?></h1>
                 
@@ -55,12 +55,30 @@
                             <h2> <?php echo $resi->__GET('cantpersonas')?></h2>
                         </div>
                     </div>
-                    <?php foreach($adm->listarXresidencia($resi->__GET('idresidencia')) as $r):?>
-                    <div>
-                        <h1><?php echo $r->__GET('semana')?></h1>
-                        <h1><?php echo $r->tipo()?></h1>
-                    </div>
-                    <?php endforeach;?>
+                            <div class="table-responsive">
+                                <table class="table">
+                                <?php
+                                    $results = $adm->listarXresidencia($resi->__GET('idresidencia'));
+                                    if(!empty($results)){
+                                        foreach($results as $r):?>
+                                        <?php if ($r->fechaDeComienzo() > date('Y-m-d')) { ?>
+                                        <tr>
+                                            <td><?php echo $r->__GET('semana')."-".$r->__GET('año')?></td>
+                                            <td><?php echo $r->vistaResidencia() ?></td>
+                                            <td>
+                                                <a class="btn btn-primary action-button" role="button" 
+                                                href="verreserva.php?sub=<?php echo $r->__GET('numReserva')?>">DETALLES</a>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                    <?php endforeach;?>
+                                    <?php
+                                    } else{
+                                        echo "<tr><td><h2>No hay semanas publicadas para esta residencia</h2></td></tr>";
+                                    }
+                                    ?>
+                                </table>
+                            </div>
                 </form>
             </div>
         </div>

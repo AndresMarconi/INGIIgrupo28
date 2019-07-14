@@ -3,30 +3,69 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div>
-                            <h1 class="panelAdm">Panel de Administrador</h1>
-                            <h1>Subastas</h1>
+                            <h1 class="panelAdm">Panel de Administrador</h1>        
+                            <h1>Directa</h1>
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
                                         <tr>
                                             <th>Residencia</th>
+                                            <th>semana</th>
                                             <th>Fecha Inicio</th>
-                                            <th>Precio Base</th>
-                                            <th>Precio Actual</th>
-                                            <th>Ganador</th>
-                                            <th>Cerrar</th>
+                                            <th>Inicio Subasta</th>
+                                            <th>Fin Subasta</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach($adm->listarSubastas() as $r): 
+                                        <?php
+                                        $result = $adm->listarDirectas();
+                                        if(!empty($result)){
+                                            foreach($result as $r):?>
+                                        <tr>
+                                            <td>
+                                                <a href="verresidencia.php?idres=<?php echo $r->__GET('idResidencia')->__GET('idresidencia')?>">
+                                                    <?php echo $r->__GET('residencia')?>
+                                                </a>        
+                                            </td>
+                                            <td><?php echo $r->__GET('semana')."-".$r->__GET('año')?></td>
+                                            <td><?php echo $r->__GET('fechainicio')?></td>
+                                            <td><?php echo $r->arranquePublicacion() ?></td>
+                                            <td><?php echo $r->finEstadoActual() ?></td>
+                                            <td><a class="btn btn-primary action-button" role="button" 
+                                                href="verreserva.php?sub=<?php echo $r->__GET('numReserva')?>">DETALLES</a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach;
+                                    } else{
+                                        echo "<tr><td><h2>No hay reservas en este estado</h2></td></tr>";
+                                    }
+                                    ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h1>Subastas Abiertas</h1>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Residencia</th>
+                                            <th>Semana</th>
+                                            <th>Fecha Inicio</th>
+                                            <th>Precio Actual</th>
+                                            <th>Ganador</th>
+                                            <th>Inicio Subasta</th>
+                                            <th>Fin Subasta</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $result = $adm->listarSubastas();
+                                        if(!empty($result)){
+                                            foreach($result as $r): 
                                             $max = $r->pujaMaxima();
-                                            $ganador = $r->ganador($max);
-                                            $var2="Aun no tiene";
-                                            if(strcmp($ganador, $var2) !== 0){
-                                                $gan = $r->__GET('numReserva');
-                                            } else {
-                                                $gan = 0;
-                                            }
                                         ?>
                                         <tr>
                                             <td>
@@ -35,40 +74,45 @@
                                                 </a>        
                                             </td>
                                             <td><?php echo $r->__GET('semana').'-'.$r->__GET('año')?></td>
-                                            <td><?php echo $r->__GET('precioBase')?></td>
+                                            <td><?php echo $r->__GET('fechainicio')?></td>
                                             <td><?php echo $max ?></td>
-                                            <td><?php echo $ganador ?></td>
-                                            <td>
-                                                <?php if($r->__GET('estado')){?>
-                                                <form method="post" 
-                                                action="?cerrarSub=<?php echo $r->__GET('numReserva')?>&gan=<?php echo $gan?>">
-                                                    <input type="hidden" name="email<?php echo $r->__GET('numReserva')?>" value="<?php echo $ganador ?>">
-                                                    <button class="btn btn-danger">CERRAR</button>
-                                                </form>
-                                                <?php } else {?>
-                                                    Subasta Cerrada
-                                                <?php }?>
+                                            <td><?php echo $r->ganador($max) ?></td>
+                                            <td><?php echo $r->arranquePublicacion() ?></td>
+                                            <td><?php echo $r->finEstadoActual() ?></td>
+                                            <td><a class="btn btn-primary action-button" role="button" 
+                                                href="verreserva.php?sub=<?php echo $r->__GET('numReserva')?>">DETALLES</a>
                                             </td>
                                         </tr>
-                                    <?php endforeach;?>
+                                    <?php endforeach;
+                                    } else{
+                                        echo "<tr><td><h2>No hay reservas en este estado</h2></td></tr>";
+                                    }
+                                    ?>
                                     </tbody>
                                 </table>
                             </div>
-                            
-                            <h1>Directa</h1>
+
+                            <h1>Subastas En Espera de aceptar</h1>
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
                                         <tr>
                                             <th>Residencia</th>
-                                            <th>semana</th>
-                                            <th>año</th>
+                                            <th>Semana</th>
                                             <th>Fecha Inicio</th>
-                                            <th>Cerrar</th>
+                                            <th>Precio Actual</th>
+                                            <th>Ganador</th>
+                                            <th>Inicio Subasta</th>
+                                            <th>Fin Subasta</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach($adm->listarDirectas() as $r):
+                                        <?php
+                                        $result = $adm->listarSubastasEnEspera();
+                                        if(!empty($result)){
+                                            foreach($result as $r): 
+                                            $max = $r->pujaMaxima();
                                         ?>
                                         <tr>
                                             <td>
@@ -76,20 +120,132 @@
                                                     <?php echo $r->__GET('residencia')?>
                                                 </a>        
                                             </td>
-                                            <td><?php echo $r->__GET('semana')?></td>
-                                            <td><?php echo $r->__GET('año')?></td>
+                                            <td><?php echo $r->__GET('semana').'-'.$r->__GET('año')?></td>
                                             <td><?php echo $r->__GET('fechainicio')?></td>
-                                            <td>
-                                                <?php if($r->__GET('estado')){?>
-                                                <form method="post" action="?cerrardir=<?php echo $r->__GET('numReserva')?>">
-                                                    <button class="btn btn-danger">PASAR A SUBASTA</button>
-                                                </form>
-                                        <?php   } else {
-                                                    echo "La adquirio el usuario ".$r->ganador();    
-                                                }?>
+                                            <td><?php echo $max ?></td>
+                                            <td><?php echo $r->ganador($max) ?></td>
+                                            <td><?php echo $r->arranquePublicacion() ?></td>
+                                            <td><?php echo $r->finEstadoActual() ?></td>
+                                            <td><a class="btn btn-primary action-button" role="button" 
+                                                href="verreserva.php?sub=<?php echo $r->__GET('numReserva')?>">DETALLES</a>
                                             </td>
                                         </tr>
-                                    <?php endforeach;?>
+                                    <?php endforeach;
+                                    } else{
+                                        echo "<tr><td><h2>No hay reservas en este estado</h2></td></tr>";
+                                    }
+                                    ?>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h1>Hot Sale</h1>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Residencia</th>
+                                            <th>semana</th>
+                                            <th>Fecha Inicio</th>
+                                            <th>Inicio Subasta</th>
+                                            <th>Fin Subasta</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $result = $adm->listarHotSale();
+                                        if(!empty($result)){
+                                            foreach($result as $r):?>
+                                        <tr>
+                                            <td>
+                                                <a href="verresidencia.php?idres=<?php echo $r->__GET('idResidencia')->__GET('idresidencia')?>">
+                                                    <?php echo $r->__GET('residencia')?>
+                                                </a>        
+                                            </td>
+                                            <td><?php echo $r->__GET('semana')."-".$r->__GET('año')?></td>
+                                            <td><?php echo $r->__GET('fechainicio')?></td>
+                                            <td><?php echo $r->arranquePublicacion() ?></td>
+                                            <td><?php echo $r->finEstadoActual() ?></td>
+                                            <td><a class="btn btn-primary action-button" role="button" 
+                                                href="verreserva.php?sub=<?php echo $r->__GET('numReserva')?>">DETALLES</a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach;
+                                    } else{
+                                        echo "<tr><td><h2>No hay reservas en este estado</h2></td></tr>";
+                                    }
+                                    ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h1>Para Poner en Hot Sale</h1>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Residencia</th>
+                                            <th>semana</th>
+                                            <th>Fecha Inicio</th>
+                                            <th>Fin de Publicacion</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $result = $adm->listarForHotSale();
+                                        if(!empty($result)){
+                                            foreach($result as $r):?>
+                                        <tr>
+                                            <td>
+                                                <a href="verresidencia.php?idres=<?php echo $r->__GET('idResidencia')->__GET('idresidencia')?>">
+                                                    <?php echo $r->__GET('residencia')?>
+                                                </a>        
+                                            </td>
+                                            <td><?php echo $r->__GET('semana')."-".$r->__GET('año')?></td>
+                                            <td><?php echo $r->__GET('fechainicio')?></td>
+                                            <td><?php echo $r->fechaDeComienzo()?></td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" 
+                                                data-target="#Modal<?php echo $r->__GET('numReserva')?>">
+                                                Publicar Hot Sale</button>
+                                            </td>
+                                            <td><a class="btn btn-primary action-button" role="button" 
+                                                href="verreserva.php?sub=<?php echo $r->__GET('numReserva')?>">DETALLES</a>
+                                            </td>
+                                        </tr>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="Modal<?php echo $r->__GET('numReserva')?>" tabindex="-1" role="dialog" aria-labelledby="Modal<?php echo $r->__GET('numReserva')?>Label" aria-hidden="true">
+                                          <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Publicar Hot Sale</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                  <span aria-hidden="true">&times;</span>
+                                                </button>
+                                              </div>
+                                              <div class="modal-body">
+                                                <h1><?php echo $r->__GET('idResidencia')->__GET('nombre')?></h1>
+                                                <h3>SEMANA: <?php echo $r->__GET('semana')."-".$r->__GET('año')?></h3>
+                                                <form method="post" action="?ponerHot=<?php echo $r->__GET('numReserva')?>">
+                                                    <input class="form-control" type="number" step="0.25" name="precioHot<?php echo $r->__GET('numReserva')?>" placeholder="ingrese precio de hot sale">
+                                              </div>
+                                              <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button class="btn btn-primary" type="submit">Publicar Hot Sale</button>
+                                                </form>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                    <?php endforeach;
+                                    } else{
+                                        echo "<tr><td><h2>No hay reservas en este estado</h2></td></tr>";
+                                    }
+                                    ?>
                                     </tbody>
                                 </table>
                             </div>

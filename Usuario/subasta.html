@@ -60,13 +60,13 @@
                         <h1><?php echo $sub->__GET('semana')?></h1>
                         <h1><?php echo $sub->tipo()?></h1><br><br>
                         <h1>PUJA ACTUAL</h1>
-                <?php $max = $sub->pujaMaxima()?>
-                <h1>$ <?php echo $max;?></h1><br><br>
-                <form class="d-flex flex-column" method="post" 
-                action="?sub=<?php echo $sub->__GET('numReserva')?>">
-                <input class="border rounded-0 form-control" type="number" step="0.01" placeholder="ingrese su puja" name="monto">
-                <button class="btn btn-primary" type="submit" name="pujar">PUJAR</button>
-                </form>
+                        <?php $max = $sub->pujaMaxima()?>
+                        <h1>$ <?php echo $max;?></h1><br><br>
+                        <form class="d-flex flex-column" method="post" action="?sub=<?php echo $sub->__GET('numReserva')?>">
+                            <input class="border rounded-0 form-control" type="number" step="0.01" placeholder="ingrese su puja" name="monto">
+                            <button class="btn btn-primary" type="submit" name="pujar">PUJAR</button>
+                        </form>
+                        <?php echo $sub->reservarVista(true)?>
                     </div>
                 </form>
             </div>
